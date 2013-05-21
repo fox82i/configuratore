@@ -1,0 +1,39 @@
+
+/* Tables  */
+
+.table {
+	background: #fff;
+}
+
+table {
+	background-color: #fff;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	text-align: left;
+}
+
+table th {
+    padding: 5px 10px;
+    border-width: 1px 0 0 0;
+	background: #e0ecff;
+    font-weight: bold;
+    line-height: 120%;
+    text-align: left;
+}
+
+table td {
+    padding: 5px 10px;
+    border: 1px #E3E3E3 solid;
+    border-width: 1px 0 0 0;
+	background: #fff;
+    text-align: left;
+}
+
+/* Checkbox  */
+
+table input.checkbox {
+	border: none;
+	padding: 0;
+	margin: 0;
+}

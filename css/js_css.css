@@ -1,0 +1,8 @@
+.odd {
+background-color: #fff; /* pale yellow for odd rows */
+}
+.even {
+background-color: #cef; /* pale blue for even rows */
+}
+.red {
+background-color: red;

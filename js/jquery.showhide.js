@@ -1,0 +1,1 @@
+$(document).ready(function(){$('div.box> div').show();$('div.box> h3').click(function(){$(this).next().slideToggle('fast')});$('div.boxed> div').hide();$('div.boxed> h3').click(function(){$(this).next().slideToggle('fast')})});

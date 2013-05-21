@@ -1,0 +1,48 @@
+/*stile per la stampa in generale*/
+body {
+		background: white;
+		font-size: 76%; !ho omesso il pt mantengo, eventualmente mettere 12pt;
+	}
+#navigation,#footer,#sub-nav,#elenco-ordini,#percorso,#titolo-pagina{
+			display:none;
+		}
+	
+#content {
+	width: auto;
+	border: 0;
+	margin: 0 5%;
+	padding: 0;
+	float: none !important;
+	text-align:justify;
+	color: black; 
+	background: transparent none;
+	
+	}
+/*div#content { !da capire se mettere la linea rossa sul contentuto o sotto la testata, a piacere/scelta*/ 
+   /*margin-left: 10%;*/
+   /*padding-top: 1em;
+   border-top: 1px solid #930;
+   }*/
+#header {
+   /*margin-left: 10%;*/
+   padding-bottom: 1em;
+   border-bottom: 1px solid #930;
+   }
+a:link, a:visited {
+	color: #520;
+	background: transparent;
+	font-weight: bold;
+	text-decoration: underline;
+	}
+th {
+    font-family:Arial;
+    color:black;
+    background-color:lightgrey;
+}
+#output#thead {
+    display:table-header-group;
+}
+#output#tbody {
+    display:table-row-group;
+}
+#output#tr {page-break-inside: avoid;}

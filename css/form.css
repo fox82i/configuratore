@@ -1,0 +1,88 @@
+
+/* Forms */
+
+form { clear: both; }
+
+.form-item {
+	clear: both;
+	margin: 0 0 20px;
+}
+
+/* Label */
+
+label {
+	font-weight: bold;
+	display: block;
+	margin: 0 0 5px 0;
+}
+
+/* Text Fields */
+
+input.text,
+textarea {
+	margin: 0 0 5px 0;
+	background: #fcfcfc;
+	border: 1px solid #ccc;
+	padding: 5px;
+	color: #333;
+	width: 75%;
+	display: inline;
+}
+
+input.text:focus,
+textarea:focus {
+	border: 1px solid #999;
+	background: #fff;
+}
+
+input.short { width: 20%; }
+input.medium { width: 50%; }
+
+/* Select Fields */
+
+select {
+	margin: 0 0 10px;
+	display: block;
+	border: 1px solid #ccc;
+	background: #fcfcfc;
+}
+
+select:focus {
+	border: 1px solid #999;
+	background: #fff;
+}
+
+/* Buttons */
+
+button { margin: 0 0 10px; }
+
+/* Radio and Checkbox */
+
+.choose {
+	clear: both;
+	margin: 0 10px 5px 0;
+	display: inline;
+}
+
+.radio,
+.checkbox {
+	margin: 0 5px 0 0;
+	padding: 0;
+	width: auto;
+	display: inline;
+}
+
+/* Others */
+
+.field-error {
+	display: block;
+	color: #c00;
+	font-weight: bold;
+}
+
+.field-help {
+	display: block;
+	margin: 0 0 10px;
+	font-size: 11px;
+	color: #999;
+}
