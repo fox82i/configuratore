@@ -28,11 +28,11 @@
 											
             									columns:[[  
 
-                										{field:'posizione_diba',title:'Posizione',width:'auto'},  
-                										{field:'codice_componente',title:'Codice componente',width:'auto'},  
-                										{field:'descrizione_componente',title:'Descrizione componente',width:'auto'},
-                										{field:'UM',title:'UM',width:'auto'},
-                										{field:'qta',title:'QTA',width:'auto'}
+                										{field:'posizione_diba',title:'Posizione',width:'60'},  
+                										{field:'codice_componente',title:'Codice componente',width:'120'},  
+                										{field:'descrizione_componente',title:'Descrizione componente',width:'300'},
+                										{field:'UM',title:'UM',width:'30'},
+                										{field:'qta',title:'QTA',width:'40'}
 
             									]],  
             									onResize:function(){  
@@ -124,7 +124,7 @@
 										<thead>  
 											<tr>
 												<th field="codice_PF_finale" width="100">Codice articolo</th>  
-												<th field="descrizione_pf_breve" width="250">Descrizione breve articolo</th>  														
+												<th field="descrizione_pf_breve" width="350">Descrizione breve articolo</th>  														
 												<th field="ordine_cliente" width="100">Ordine cliente</th>
 												<th field="riga_ordine_cliente" width="80" align="center">Riga ordine</th>
 														

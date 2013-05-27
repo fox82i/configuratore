@@ -193,8 +193,8 @@
 							</tr> ";
 				
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
 					case "41":
@@ -208,8 +208,8 @@
 							</tr> ";
 				
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
 					case "42":
@@ -223,8 +223,8 @@
 							</tr> ";
 				
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 					
 						break;
@@ -238,8 +238,8 @@
 								<td>".$sub_riga['quantita']." etichetta logo testata LS per singolo prodotto assemblato</td>			
 							</tr> ";
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}	
 						break;
 					case "60":
@@ -252,8 +252,8 @@
 								<td>".$sub_riga['quantita']." fermacavo per singolo prodotto assemblato</td>			
 							</tr> ";				
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
 					case "70":
@@ -266,8 +266,8 @@
 								<td>".$sub_riga['quantita']." vite fermacavo per singolo prodotto assemblato</td>			
 							</tr> ";				
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
 					case "71":
@@ -281,8 +281,8 @@
 							</tr> ";
 				
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 					
 						break;
@@ -297,8 +297,8 @@
 							</tr> ";
 				
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 					
 						break;
@@ -333,8 +333,8 @@
 								<td>".$sub_riga['quantita']." etichetta imballo singolo  per singolo imballo</td>			
 							</tr> ";			
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
 				}
@@ -354,8 +354,8 @@
 								<td>".$sub_riga['quantita']." ".$sub_riga['descrizione_di_massima_componente']." per singolo prodotto assemblato</td>			
 							</tr> ";
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
 					case "131":
@@ -368,8 +368,8 @@
 								<td>".$sub_riga['quantita']." ".$sub_riga['descrizione_di_massima_componente']." per singolo prodotto assemblato</td>			
 							</tr> ";
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
 					case "140":
@@ -382,8 +382,8 @@
 								<td>".$sub_riga['quantita']." ".$sub_riga['descrizione_di_massima_componente']." per singolo prodotto assemblato</td>			
 							</tr> ";
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}	
 						break;
 					case "150":
@@ -396,8 +396,8 @@
 								<td>".$sub_riga['quantita']." ".$sub_riga['descrizione_di_massima_componente']." per singolo prodotto assemblato</td>			
 							</tr> ";
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
 					case "160":		
@@ -424,8 +424,8 @@
 								<td>".$sub_riga['quantita']." ".$sub_riga['descrizione_di_massima_componente']." per singolo prodotto assemblato</td>			
 							</tr> ";
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],$sub_riga['descrizione_di_massima_componente'],$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
 				}

@@ -22,21 +22,21 @@
 				WHERE codice_pf_finale='".$codice_PF."';";
 	
 	try{
+	
 		$dbh->beginTransaction();	
 		
-		$query=$dbh->prepare($query1);
+		#$query=$dbh->prepare($query1);
 		if($dbh->exec($query1)){
-			$dbh->commit();
-			$query=$dbh->prepare($query2);
+			#$dbh->commit();
+		#	$query=$dbh->prepare($query3);
 	
 			if($dbh->exec($query2)){
-				$dbh->commit();
-				$query=$dbh->prepare($query3);
-				
+				#$dbh->commit();
+				#$query=$dbh->prepare($query2);				
 				if($dbh->exec($query3)){
 					$dbh->commit();					
 					echo json_encode(array('success'=>true));  					
-				}else{	
+				}else{						
 					echo json_encode(array('success'=>false,'errorMsg'=>"Valore processato non aggiornato per questo ordine cliente:".$ordine_cliente." e riga ".$riga_ordine));  
 				}
 			}else{
