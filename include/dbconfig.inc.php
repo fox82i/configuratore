@@ -2,7 +2,7 @@
 
 $dbhost = "localhost";
 $dbuser = "root";
-$dbpass = "i19691982!D";
+$dbpass = "claudias82!";
 $dbname = "configuratore";
 
 // -- do not edit below this line -- 

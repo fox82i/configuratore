@@ -12,6 +12,7 @@
             
 			<script type=\"text/javascript\" language=\"javascript\">
 			
+			
 			$(function(){
 								$('#dg').datagrid({  
     								view: detailview,  
@@ -74,6 +75,12 @@
                 });  
             }
 		}
+			function doSearch(){
+				$('#dg').datagrid('load',{
+					codice_PF: $('#codice_PF').val(),
+					ordine: $('#ordine').val()
+				});
+			}
 		</script>
 		";
 	
@@ -113,26 +120,33 @@
 								<div class="inside">
 								
 									<table id="dg" title="DiBa Tecnica" class="easyui-datagrid" style="width:auto;height:auto"  										
-										toolbar="#toolbar" pagination="true"  
+										toolbar="#toolbar" pagination="true"   iconCls="icon-search"
 										url="controller/Gestione_diba/enumerate_diba.php" 
 										singleSelect="multiple" >  
 										<thead frozen="true">  
 											<tr>					
-												<th field="selezionato" checkbox="true"></td>
+												<th field="selezionato"  checkbox="true" ></td>
 											</tr>
 										</thead>
 										<thead>  
 											<tr>
-												<th field="codice_PF_finale" width="100">Codice articolo</th>  
-												<th field="descrizione_pf_breve" width="350">Descrizione breve articolo</th>  														
-												<th field="ordine_cliente" width="100">Ordine cliente</th>
-												<th field="riga_ordine_cliente" width="80" align="center">Riga ordine</th>
+												<th field="codice_PF_finale" width="100" sortable="true" resizable="false" >Codice articolo</th>  
+												<th field="descrizione_pf_breve" width="350" sortable="true">Descrizione breve articolo</th>  														
+												<th field="ordine_cliente" width="100" sortable="true" >Ordine cliente</th>
+												<th field="riga_ordine_cliente" width="80" align="center" sortable="true">Riga ordine</th>
 														
 											</tr>  
 										</thead>  
 									</table>  
 									<div id="toolbar">       												
+										<span>Codice aritcolo:</span>  
+										<input id="codice_PF" style="line-height:15px;border:1px solid #ccc">  
+										<span>Ordine cliente:</span>  
+										<input id="ordine" style="line-height:15px;border:1px solid #ccc">  
+										<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Search</a>  
+										<br/>
 										<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="deleteResult()">Elimina DiBa</a>  
+										
 		        					</div>  
 								</div>
 						</div>
