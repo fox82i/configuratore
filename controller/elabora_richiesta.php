@@ -270,7 +270,7 @@
 								
 								echo "<p><strong>IL PRODOTTO &Egrave; FATTIBILE</strong></p>
 										<strong>I dati tecnici del prodotto sono riferiti per 1 prodotto: </strong><br/>
-										CODICE PRODOTTO MANILA: ".$codice_PF." <br />
+										CODICE PRODOTTO: ".$codice_PF." <br />
 										Potenza: ".$potenza."W <br />
 										Tensione: ".$row['tensione_alimentazione']."V <br />
 										Numero led: ".$num_led." <br />
@@ -313,7 +313,7 @@
 								
 								echo "<p><strong>IL PRODOTTO &Egrave; FATTIBILE</strong></p>
 										<strong>I dati tecnici del prodotto sono riferiti per 1 prodotto: </strong><br/>
-										CODICE PRODOTTO MANILA: ".$codice_PF." <br />
+										CODICE PRODOTTO: ".$codice_PF." <br />
 										Potenza: ".$potenza."W <br />
 										Tensione: ".$row['tensione_alimentazione']."V <br />
 										Numero led: ".$num_led." <br />
@@ -361,7 +361,7 @@
 						
 						echo "<p><strong>IL PRODOTTO &Egrave; FATTIBILE</strong></p>
 										<strong>I dati tecnici del prodotto sono riferiti per 1 prodotto: </strong><br/>
-										CODICE PRODOTTO MANILA: ".$codice_PF." <br />
+										CODICE PRODOTTO: ".$codice_PF." <br />
 										Potenza: ".$potenza."W <br />
 										Tensione: ".$row['tensione_alimentazione']."V <br />
 										Numero led: ".$num_led." <br />									

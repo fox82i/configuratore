@@ -25,6 +25,10 @@
 				var poststr = getFormValues(f);
 				postData(url, poststr,divid);
 			}
+			function formget2(url,divid) {
+				
+				postData2(url, divid);
+			}
  
 			function postData(url, parameters,divid){
 				var xmlHttp = AJAX();
@@ -42,6 +46,23 @@
 			//	xmlHttp.setRequestHeader("Content-length", parameters.length);
 			//	xmlHttp.setRequestHeader("Connection", "close");
 				xmlHttp.send(parameters);
+			}
+			function postData2(url, divid){
+				var xmlHttp = AJAX();
+				xmlHttp.onreadystatechange =  function(){
+					if(xmlHttp.readyState > 0 && xmlHttp.readyState < 4){
+						document.getElementById(divid).innerHTML=loadingmessage;
+					}
+					if (xmlHttp.readyState == 4) {
+						document.getElementById(divid).innerHTML=xmlHttp.responseText;
+					}
+
+				}
+				xmlHttp.open("POST", url, true);
+				xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			//	xmlHttp.setRequestHeader("Content-length", parameters.length);
+			//	xmlHttp.setRequestHeader("Connection", "close");
+				xmlHttp.send();
 			}
 			
 			function getFormValues(fobj){

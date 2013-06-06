@@ -81,9 +81,11 @@
 					<thead>
 						<tr>	
 							
-							<th>Codice componente</th>							
+							<th>Codice componente</th>		
+							<th>Quantit&agrave;</th>	
 							<th>UM</th>
-							<th>Quantit&agrave;</th>					
+							<th>T</th>
+							<th>O</th>				
 						</tr>
 					</thead>
 					<tbody>
@@ -92,9 +94,12 @@
 				echo "<tr>";
 				echo "
 						
-						<td>".$row['codice_componente']."</td>						
+						<td>".$row['codice_componente']."</td>		
+						<td>".$row['qta']."</td>
 						<td>".$row['UM']."</td>
-						<td>".$row['qta']."</td>";
+						<td>L</td>
+						<td>0010</td>
+						";
 				echo "</tr>";
 			}
 			echo"	</tbody>
