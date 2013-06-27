@@ -73,7 +73,10 @@
 					<strong>Colore luce: </strong>".$row['descrittivo_luce']."K<br />
 					<strong>Accessorio: </strong>".$row['accessorio']."<br />					
 					<strong>Quantit&agrave; da produrre: </strong>". $row['quantita']."<br />
-					<strong>Codice PF finale: </strong>".$row['codice_pf_finale'];
+					<strong>Codice PF finale: </strong>".$row['codice_pf_finale']."<br/>
+					<strong>Riferimento ordine cliente: </strong>".$row['riferimento_cliente']
+					;
+					
 				}
 		
 			foreach ($diba as $sub_riga){
@@ -272,17 +275,28 @@
 						break;
 					case "71":
 						//CONFEZIONE FISSAGGIO
+						$conf_fissaggio="";
+						$qta_conf_fissaggio="";
 						echo "<tr>
 								<td>".$sub_riga['ordine']."</td>			
 								<td>".$sub_riga['codice_componente']."</td>			
 								<td>".$sub_riga['descrizione_di_massima_componente']."</td>			
-								<td>".$sub_riga['quantita']*$rows[0]['quantita']."</td>			
-								<td>".$sub_riga['quantita']." ".$sub_riga['descrizione_di_massima_componente']."</td>			
+								";
+								if ($rows[0]['lunghezza']<=1500){
+									$conf_fissaggio=$sub_riga['quantita']*$rows[0]['quantita'];
+									$qta_conf_fissaggio=$sub_riga['quantita'];
+								}else{
+									$conf_fissaggio=($sub_riga['quantita']*$rows[0]['quantita'])*2;
+									$qta_conf_fissaggio=$sub_riga['quantita']*2;
+								}
+								
+						echo "	<td>".$conf_fissaggio."</td>			
+								<td>".$qta_conf_fissaggio." ".$sub_riga['descrizione_di_massima_componente']."</td>			
 							</tr> ";
 				
 						if (!$diba_prod){
-							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita']*$rows[0]['quantita'],date("Ymd"));
-							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
+							inserisci_diba('diba_produzione',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$conf_fissaggio,date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$qta_conf_fissaggio,date("Ymd"));
 						}
 					
 						break;
@@ -372,7 +386,9 @@
 							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
-					case "140":
+						
+				# AL MOMENTO I PRODOTTI NON SONO CERTIFICATI
+				/*	case "140":
 						//ETICHETTA MARCHIO ETL
 						echo "<tr>
 								<td>".$sub_riga['ordine']."</td>			
@@ -400,6 +416,7 @@
 							inserisci_diba('diba_tecnica',$ordine_produzione,$riga_ordine,$rows[0]['codice_pf_finale'],$sub_riga['ordine'],$sub_riga['codice_componente'],utf8_encode(trim(addslashes($sub_riga['descrizione_di_massima_componente']))),$sub_riga['UM'],$sub_riga['quantita'],date("Ymd"));
 						}
 						break;
+				*/
 					case "160":		
 						//ETICHETTA BANDIERA PER CAVO ETL
 						echo "<tr>

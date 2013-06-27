@@ -2,7 +2,7 @@
 
 	include("../include/dbconfig.inc.php");
 
-
+	$riferimento_ordine_cliente="";
 	$nome_prodotto=$_POST['nome_prodotto'];
 	$motore_led=$_POST['motore_led'];
 	$temperatura_colore=$_POST['temp_colore'];
@@ -13,6 +13,11 @@
 	if (isset($_POST['fissaggio'])){
 		$sistema_fissaggio=$_POST['fissaggio'];
 	}
+	
+	if (isset($_POST['riferimento_ordine_cliente'])){
+		$riferimento_ordine_cliente=trim($_POST['riferimento_ordine_cliente']);
+	}
+	
 	$lunghezza=(int)trim($_POST['lung_prod']);
 	$quantita=(int)trim($_POST['quantita']);
 	$codice_cliente=trim($_POST['codice_cliente']);
@@ -277,6 +282,7 @@
 										Lunghezza REEL: ".$numero_barre."mm <br />
 										Descrittivo breve: ".$nome_prodotto." ".$motore_led." ".$descrizione_breve_accessorio." ".$codice_fissaggio." ".$lunghezza." ".$row['codifica_temperatura']." ".$potenza."W ".$row['tensione_alimentazione']."V ".$colore_schermo." <br />
 										Descrittivo lungo: ".$nome_prodotto." ".$motore_led." ".$descrizione_lunga_accessorio." ".$descrizione_fissaggio." ".$lunghezza."mm ".$row['tipo_luce']." ".$potenza."W ".$row['tensione_alimentazione']."VDC SCHERMO ".$row['descrizione_schermo']."<br />
+										Riferimento:".$riferimento_ordine_cliente." <br />
 										";					
 												
 							//$area_utile=$parte_decimale*50;
@@ -290,8 +296,8 @@
 						die();
 					}
 					//AL MOMENTO DELL'INSERIMENTO IL CODICE PF FINALE è STATO SOSTITUITO CON UN CODICE PF FITTIZIO IN FUNZIONE DELLE LOGICIE DI PRODUZIONE. Per riprisitare il valore mettere la variabile $codice_PF
-					if($dbh->exec("INSERT INTO richieste_ordini_produzione (data_inserimento,numero_ordine_cliente,riga_ordine_cliente,nome_prodotto,motore_led,id_tipo_luce,id_accessorio,lunghezza,codice_schermo,area_utile,codice_fissaggio,quantita,codice_pf_finale,descrizione_pf,descrizione_pf_breve,processato) 
-																	VALUES('".$data_ordine."','".$ordine_cliente."','".$riga_ordine_cliente."','".$nome_prodotto."','".$motore_led."','".$temperatura_colore."','".$accessorio."','".$lunghezza."','".$colore_schermo."','".$area_utile."','".$sistema_fissaggio."','".$quantita."','".return_temporary_code_MICHELON($ordine_cliente,$riga_ordine_cliente)."','".$descrittivo_pf."','".$descrittivo_pf_breve."','0')")){
+					if($dbh->exec("INSERT INTO richieste_ordini_produzione (data_inserimento,numero_ordine_cliente,riga_ordine_cliente,nome_prodotto,motore_led,id_tipo_luce,id_accessorio,lunghezza,codice_schermo,area_utile,codice_fissaggio,quantita,codice_pf_finale,descrizione_pf,descrizione_pf_breve,riferimento_cliente,tensione_alimentazione,potenza_barra_led,num_led,processato) 
+																	VALUES('".$data_ordine."','".$ordine_cliente."','".$riga_ordine_cliente."','".$nome_prodotto."','".$motore_led."','".$temperatura_colore."','".$accessorio."','".$lunghezza."','".$colore_schermo."','".$area_utile."','".$sistema_fissaggio."','".$quantita."','".return_temporary_code_MICHELON($ordine_cliente,$riga_ordine_cliente)."','".$descrittivo_pf."','".$descrittivo_pf_breve."','".$riferimento_ordine_cliente."','".$row['tensione_alimentazione']."','".$potenza."','".$num_led."','0')")){
 						echo "<br /><p style=\"color: red;\"><strong>Richiesta di produzione inserita</strong></p>";
 					}else{
 						echo "<br /><p style=\"color: red;\"><strong>>Problemi dell'inserire la richiesta di produzione per questo prodotto personalizzato</strong></p>";
@@ -320,6 +326,7 @@
 										Lunghezza REEL: ".$numero_barre."mm <br />
 										Descrittivo breve: ".$nome_prodotto." ".$motore_led." ".$descrizione_breve_accessorio." ".$codice_fissaggio." ".$lunghezza." ".$row['codifica_temperatura']." ".$potenza."W ".$row['tensione_alimentazione']."V ".$colore_schermo." <br />
 										Descrittivo lungo: ".$nome_prodotto." ".$motore_led." ".$descrizione_lunga_accessorio." ".$descrizione_fissaggio." ".$lunghezza."mm ".$row['tipo_luce']." ".$potenza."W ".$row['tensione_alimentazione']."VDC SCHERMO ".$row['descrizione_schermo']."<br />
+										Riferimento: ".$riferimento_ordine_cliente." <br />
 										";
 							
 							//	$area_utile=$parte_decimale*25;
@@ -334,8 +341,8 @@
 						die();
 					}
 					//AL MOMENTO DELL'INSERIMENTO IL CODICE PF FINALE è STATO SOSTITUITO CON UN CODICE PF FITTIZIO IN FUNZIONE DELLE LOGICIE DI PRODUZIONE. Per riprisitare il valore mettere la variabile $codice_PF
-					if($dbh->exec("INSERT INTO richieste_ordini_produzione (data_inserimento,numero_ordine_cliente,riga_ordine_cliente,nome_prodotto,motore_led,id_tipo_luce,id_accessorio,lunghezza,codice_schermo,area_utile,codice_fissaggio,quantita,codice_pf_finale,descrizione_pf,descrizione_pf_breve,processato) 
-																	VALUES('".$data_ordine."','".$ordine_cliente."','".$riga_ordine_cliente."','".$nome_prodotto."','".$motore_led."','".$temperatura_colore."','".$accessorio."','".$lunghezza."','".$colore_schermo."','".$area_utile."','".$sistema_fissaggio."','".$quantita."','".return_temporary_code_MICHELON($ordine_cliente,$riga_ordine_cliente)."','".$descrittivo_pf."','".$descrittivo_pf_breve."','0')")){
+					if($dbh->exec("INSERT INTO richieste_ordini_produzione (data_inserimento,numero_ordine_cliente,riga_ordine_cliente,nome_prodotto,motore_led,id_tipo_luce,id_accessorio,lunghezza,codice_schermo,area_utile,codice_fissaggio,quantita,codice_pf_finale,descrizione_pf,descrizione_pf_breve,riferimento_cliente,tensione_alimentazione,potenza_barra_led,num_led,processato) 
+																	VALUES('".$data_ordine."','".$ordine_cliente."','".$riga_ordine_cliente."','".$nome_prodotto."','".$motore_led."','".$temperatura_colore."','".$accessorio."','".$lunghezza."','".$colore_schermo."','".$area_utile."','".$sistema_fissaggio."','".$quantita."','".return_temporary_code_MICHELON($ordine_cliente,$riga_ordine_cliente)."','".$descrittivo_pf."','".$descrittivo_pf_breve."','".$riferimento_ordine_cliente."','".$row['tensione_alimentazione']."','".$potenza."','".$num_led."','0')")){
 							echo "<br /><p style=\"color: red;\"><strong>Richiesta di produzione inserita</strong></p>";
 					}else{
 						echo "<br /><p style=\"color: red;\"><strong>>Problemi dell'inserire la richiesta di produzione per questo prodotto personalizzato</strong></p>";
@@ -367,6 +374,7 @@
 										Numero led: ".$num_led." <br />									
 										Descrittivo breve: ".$nome_prodotto." ".$motore_led." ".$descrizione_breve_accessorio." ".$codice_fissaggio." ".$lunghezza." ".$row['codifica_temperatura']." ".$potenza."W ".$row['tensione_alimentazione']."V ".$colore_schermo." <br />
 										Descrittivo lungo: ".$nome_prodotto." ".$motore_led." ".$descrizione_lunga_accessorio." ".$descrizione_fissaggio." ".$lunghezza."mm ".$row['tipo_luce']." ".$potenza."W ".$row['tensione_alimentazione']."VDC SCHERMO ".$row['descrizione_schermo']."<br />
+										Riferimento: ".$riferimento_ordine_cliente." <br />
 										";			
 						$descrittivo_pf=$nome_prodotto." ".$motore_led." ".$descrizione_lunga_accessorio." ".$descrizione_fissaggio." ".$lunghezza."mm ".$row['tipo_luce']." ".$potenza."W ".$row['tensione_alimentazione']."VDC SCHERMO ".$row['descrizione_schermo'];
 						$descrittivo_pf_breve=$nome_prodotto." ".$motore_led." ".$descrizione_breve_accessorio." ".$codice_fissaggio." ".$lunghezza." ".$row['codifica_temperatura']." ".$potenza."W ".$row['tensione_alimentazione']."V ".$colore_schermo;
@@ -376,8 +384,8 @@
 						die();
 					}
 					//AL MOMENTO DELL'INSERIMENTO IL CODICE PF FINALE è STATO SOSTITUITO CON UN CODICE PF FITTIZIO IN FUNZIONE DELLE LOGICIE DI PRODUZIONE. Per riprisitare il valore mettere la variabile $codice_PF
-					if($dbh->exec("INSERT INTO richieste_ordini_produzione (data_inserimento,numero_ordine_cliente,riga_ordine_cliente,nome_prodotto,motore_led,id_tipo_luce,id_accessorio,lunghezza,codice_schermo,area_utile,codice_fissaggio,quantita,codice_pf_finale,descrizione_pf,descrizione_pf_breve,processato) 
-																	VALUES('".$data_ordine."','".$ordine_cliente."','".$riga_ordine_cliente."','".$nome_prodotto."','".$motore_led."','".$temperatura_colore."','".$accessorio."','".$lunghezza."','".$colore_schermo."','".$area_utile."','".$sistema_fissaggio."','".$quantita."','".return_temporary_code_MICHELON($ordine_cliente,$riga_ordine_cliente)."','".$descrittivo_pf."','".$descrittivo_pf_breve."','0')")){
+					if($dbh->exec("INSERT INTO richieste_ordini_produzione (data_inserimento,numero_ordine_cliente,riga_ordine_cliente,nome_prodotto,motore_led,id_tipo_luce,id_accessorio,lunghezza,codice_schermo,area_utile,codice_fissaggio,quantita,codice_pf_finale,descrizione_pf,descrizione_pf_breve,riferimento_cliente,tensione_alimentazione,potenza_barra_led,num_led,processato) 
+																	VALUES('".$data_ordine."','".$ordine_cliente."','".$riga_ordine_cliente."','".$nome_prodotto."','".$motore_led."','".$temperatura_colore."','".$accessorio."','".$lunghezza."','".$colore_schermo."','".$area_utile."','".$sistema_fissaggio."','".$quantita."','".return_temporary_code_MICHELON($ordine_cliente,$riga_ordine_cliente)."','".$descrittivo_pf."','".$descrittivo_pf_breve."','".$riferimento_ordine_cliente."','".$row['tensione_alimentazione']."','".$potenza."','".$num_led."','0')")){
 						echo "<br /><p style=\"color: red;\"><strong>Richiesta di produzione inserita</strong></p>";
 					}else{
 						echo "<br /><p style=\"color: red;\"><strong>>Problemi dell'inserire la richiesta di produzione per questo prodotto personalizzato</strong></p>";

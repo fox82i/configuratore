@@ -8,7 +8,7 @@
 		
 		$ordine_cliente = $_POST['man'];//ordine cliente
 	
-		$select = "SELECT riga_ordine_cliente  FROM diba_produzione WHERE ordine_cliente = '".$ordine_cliente."' GROUP BY riga_ordine_cliente  ASC";
+		$select = "SELECT riga_ordine_cliente  FROM diba_produzione WHERE ordine_cliente = '".$ordine_cliente."' GROUP BY riga_ordine_cliente  ORDER BY riga_ordine_cliente ASC";
 	
 
 		echo "<?xml version=\"1.0\" ?>\n

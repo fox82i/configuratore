@@ -128,13 +128,17 @@
 													<input type="text" name="riga_ordine_cliente" id="riga_ordine_cliente" value="" maxlength="3" size="3" tabindex="110"  />
 												</label>
 												
+												<label><strong>Riferimento ordine cliente:</strong><br /><br />												
+													<textarea name="riferimento_ordine_cliente" id="riferimento_ordine_cliente" type="text" cols="10"  maxlength="255" size="3" tabindex="120"></textarea>
+												</label>
+												
 												<label><strong>Data inserimento ordine:</strong><br />
-												<input type="text" name="data_ordine" id="data_ordine" value=<?php echo date("Y-m-d")?> size="10" tabindex="120"  />
+												<input type="text" name="data_ordine" id="data_ordine" value=<?php echo date("Y-m-d")?> size="10" tabindex="130"  />
 											<!--	<input type="date" name="bday"> -->
 												</label>
 									
 										<!--<input type="reset" value="Clear Selected" name="Clear">-->
-									<input type="button" name="Send" value="Send" onclick="javascript: formget(this.form, 'controller/elabora_richiesta.php','output2');" tabindex="120">
+									<input type="button" name="Send" value="Send" onclick="javascript: formget(this.form, 'controller/elabora_richiesta.php','output2');" tabindex="140">
 								</form>
 									
 								<br />****** SERVER RESPONSE ******<br /><br />
