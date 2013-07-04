@@ -39,7 +39,7 @@
 				generate_menu(0);
 				echo "</div>";
 				?>
-					<div id="main">
+				<div id="main">
                 <div id="main-header">
                         <h2 id="titolo-pagina">Distinta base tecnica/produzione</h2>
                         <span class="breadcrumb" id="percorso"><a href="#">Home</a> &raquo; <a href="#">Dashboard</a> </span>
