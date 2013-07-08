@@ -63,6 +63,9 @@ include("include/dbconfig.inc.php");
 										url="controller/enumerate_dati_etichetta_no_etl.php" >  
 										<thead>  
 											<tr>
+												
+												<th field="data_inserimento"  width="100" sortable="true" resizable="false" >Data inserimento</th>  
+												<th field="nome_prodotto"  width="100" sortable="true" resizable="false" >Prodotto</th>  
 												<th field="codice_pf_finale"  width="100" sortable="true" resizable="false" >Codice pf finale</th>  
 												<th field="motore_led" width="110"  >Tipo di barra LED</th>
 												<th field="tipo_di_touch_led" width="100" >Tipo di touch led</th>

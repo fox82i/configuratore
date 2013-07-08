@@ -16,7 +16,9 @@
 	$where_ricerca = "richieste_ordini_produzione.codice_pf_finale like '%$codice_articolo%' ";
 	
 	
-	$sql=$dbh->query("	SELECT 	richieste_ordini_produzione.codice_pf_finale,
+	$sql=$dbh->query("	SELECT 	richieste_ordini_produzione.data_inserimento,
+								richieste_ordini_produzione.nome_prodotto,
+								richieste_ordini_produzione.codice_pf_finale,
 								richieste_ordini_produzione.motore_led,
 								(CASE id_accessorio WHEN 1 THEN '' WHEN 2 THEN 'D' WHEN 3 THEN 'S' END) as  tipo_di_touch_led,
 								richieste_ordini_produzione.tensione_alimentazione,
@@ -38,7 +40,9 @@
 	
 	$sql="";
 	$sql=$dbh->query("	
-						SELECT 	richieste_ordini_produzione.codice_pf_finale,
+						SELECT 	richieste_ordini_produzione.data_inserimento,
+								richieste_ordini_produzione.nome_prodotto,
+								richieste_ordini_produzione.codice_pf_finale,
 								richieste_ordini_produzione.motore_led,
 								(CASE id_accessorio WHEN 1 THEN '' WHEN 2 THEN 'D' WHEN 3 THEN 'S' END) as  tipo_di_touch_led,
 								richieste_ordini_produzione.tensione_alimentazione,
