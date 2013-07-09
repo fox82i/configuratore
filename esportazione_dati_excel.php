@@ -45,12 +45,14 @@ include("include/dbconfig.inc.php");
 												
 								<div class="inside">
 									<p><strong>Questi dati devono essere inserite nel database etichette. Chiedere al tecnico la localizzazione del db etichette</strong></p>
-									<form id="aForm2">
+									<form id="aForm2" method='POST' action='controller/generate_file_excel.php'>
 												&nbsp;<label>
 												<strong>Nome file Excel</strong>&nbsp;
 													<input type="text" name="nome_file" id="nome_file" value="" maxlength="20" size="20" tabindex="10"  />
 												</label>
-											<input type="button" name="Send" value="Visualizza" onclick="javascript: formget(this.form, 'controller/generate_file_excel.php','output');" tabindex="20">
+												<br/><br/>
+												<input type="submit" value="Downolad File">
+										<!--	<input type="button" name="Send" value="Visualizza" onclick="javascript: formget(this.form, 'controller/generate_file_excel.php','output');" tabindex="20">-->
 										</form>
 									<div id="loading" style="display:none;"></div>	
 									

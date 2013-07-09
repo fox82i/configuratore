@@ -2,21 +2,31 @@
 /** Include PHPExcel */
 	require_once '../Excel_Classes/PHPExcel.php';
 	require_once '../include/dbconfig.inc.php';
-	#$nome_file=trim($_POST['nome_file']));
 	
-	$nome_file='prova';
-	
-	$sql=$dbh->query("	SELECT 	richieste_ordini_produzione.codice_pf_finale,
+	date_default_timezone_set('Europe/Rome');
+	$nome_file=trim($_POST['nome_file']);
+		
+	$sql=$dbh->query("	SELECT 	richieste_ordini_produzione.data_inserimento,
+								storico_richieste.codice_cliente,
+								richieste_ordini_produzione.nome_prodotto,
+								richieste_ordini_produzione.codice_pf_finale,
 								richieste_ordini_produzione.motore_led,
-								(CASE id_accessorio WHEN 1 THEN '' WHEN 2 THEN 'D' WHEN 3 THEN 'S' END) as  tipo_di_touch_led,
-								richieste_ordini_produzione.tensione_alimentazione,
-								richieste_ordini_produzione.potenza_barra_led,
-								richieste_ordini_produzione.lunghezza,
+								motore_led.descrizione_motore,
+								richieste_ordini_produzione.lunghezza as lunghezza_barra,								
+								richieste_ordini_produzione.potenza_barra_led,								
 								tipo_luce.tipo_luce as Temperatura_colore,
-								left(tipo_luce.codifica_temperatura,1)as K_abbreviato 
-						FROM 	richieste_ordini_produzione,tipo_luce 
+								accessori.descrizione as Accessorio,
+								schermo.descrizione_schermo as Schermo,
+								richieste_ordini_produzione.quantita as Quantita_richiesta
+								
+						FROM 	richieste_ordini_produzione,tipo_luce,schermo,accessori,motore_led,storico_richieste
 						WHERE 	
 								tipo_luce.id_tipo_luce=richieste_ordini_produzione.id_tipo_luce
+							AND	motore_led.codice_motore_led=richieste_ordini_produzione.motore_led
+							AND	storico_richieste.ordine_cliente=richieste_ordini_produzione.numero_ordine_cliente
+							AND storico_richieste.riga_ordine_cliente=richieste_ordini_produzione.riga_ordine_cliente
+							AND accessori.id_accessorio=richieste_ordini_produzione.id_accessorio
+							AND richieste_ordini_produzione.codice_schermo=schermo.codice_schermo
 					");
 
 	$sql->execute();
@@ -36,7 +46,7 @@
 		$objWorksheet->setCellValue($col.$riga,$key);
 		$col++;
 	}
-	#
+	# MI POSIZIONO SULLA SECONDA RIGA
 	$riga=2;
 	foreach($analisi as $valore){
 		$col='A';
@@ -47,9 +57,50 @@
 		$riga++;
 		
 	}
-
-
-
+	
+	# STATISTICHE DI FREQUENZA  DA METTERE IN UN SECONDO FOGLIO
+	$sql=$dbh->query("
+						SELECT 	storico_richieste.nome_prodotto,
+								storico_richieste.lunghezza, 
+								count(storico_richieste.lunghezza) as Frequenza_lunghezza,
+								SUM(richieste_ordini_produzione.quantita) as QTA_richiesta
+						FROM 	storico_richieste,richieste_ordini_produzione
+						WHERE 	storico_richieste.ordine_cliente=richieste_ordini_produzione.numero_ordine_cliente
+							AND storico_richieste.riga_ordine_cliente=richieste_ordini_produzione.riga_ordine_cliente
+						GROUP BY richieste_ordini_produzione.lunghezza
+						ORDER BY Frequenza_lunghezza DESC
+					");
+	
+	$sql->execute();
+	# con FETCH_ASSOC elimino l'array di array dall'oggetto generato da PDO ==> evito di campi doppi
+	$statistiche=$sql->fetchAll(PDO::FETCH_ASSOC);
+	
+	#AUMENTO LE RIGHE COSI ACCODO LE STATISTICHE
+	$riga=$riga+5;
+	$col='A';
+	# PRIMA RIGA CON INTESTAZIONE DEI CAMPI QUERY
+	foreach ($statistiche[0] as $key => $val){
+		$objWorksheet->setCellValue($col.$riga,$key);
+		$col++;
+	}
+	#
+	$riga=$riga+1;
+	foreach($statistiche as $valore){
+		$col='A';
+		foreach ($valore as $key => $val){
+			$objWorksheet->setCellValue($col.$riga, $val);
+			$col++;
+		}
+		$riga++;
+		
+	}
+	
+	
+	
+	
+					
+					
+					
 	// Set document properties
 	$objPHPExcel->getProperties()->setCreator("Alessandro Fornasier")
 							 ->setLastModifiedBy("Alessandro Fornasier")
@@ -60,7 +111,7 @@
 							 ->setCategory("Test result file");
 
 	// Rename worksheet
-	$objPHPExcel->getActiveSheet()->setTitle('Dati Etichette');
+	$objPHPExcel->getActiveSheet()->setTitle('Dati Configuratore');
 
 
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
