@@ -48,7 +48,7 @@ include("include/dbconfig.inc.php");
 									<form id="aForm2" method='POST' action='controller/generate_file_excel.php'>
 												&nbsp;<label>
 												<strong>Nome file Excel</strong>&nbsp;
-													<input type="text" name="nome_file" id="nome_file" value="" maxlength="20" size="20" tabindex="10"  />
+													<input type="text" name="nome_file" id="nome_file" value="" maxlength="25" size="20" tabindex="10"  />
 												</label>
 												<br/><br/>
 												<input type="submit" value="Downolad File">

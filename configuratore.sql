@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.10.2
+-- version 4.0.4.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: Lug 08, 2013 alle 17:45
+-- Generato il: Lug 12, 2013 alle 17:44
 -- Versione del server: 5.5.20
 -- Versione PHP: 5.3.8
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `configuratore`
 --
+CREATE DATABASE IF NOT EXISTS `configuratore` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+USE `configuratore`;
 
 -- --------------------------------------------------------
 
@@ -2895,6 +2897,69 @@ INSERT INTO `ingombri_tecnici` (`prodotto_lineare`, `motore_led`, `id_accessorio
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `listino_configurati`
+--
+
+CREATE TABLE IF NOT EXISTS `listino_configurati` (
+  `nome_prodotto` varchar(50) COLLATE utf8_bin NOT NULL COMMENT 'Nome prodotto barra lineare',
+  `da` int(11) NOT NULL COMMENT 'partenza lunghezza per range prezzo',
+  `a` int(11) NOT NULL COMMENT 'fine lunghezza per range prezzo',
+  `data_validita` date NOT NULL COMMENT 'inzio validità prezzo per quel range di lunghezza',
+  `id_accessorio` int(11) NOT NULL COMMENT 'Accessorio per la composizione del prezzo',
+  `prezzo_configurato` double DEFAULT NULL COMMENT 'prezzo base di vendita del prodotto configurato',
+  `prezzo_minimo_configurato` double DEFAULT NULL COMMENT 'prezzo minimo di vendita del prodotto configurato',
+  `prezzo_non_configurato` double DEFAULT NULL COMMENT 'prezzo base di vendita del prodotto non configurato',
+  PRIMARY KEY (`nome_prodotto`,`da`,`a`,`data_validita`,`id_accessorio`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Listino di riferimento dei prodotti configurabili';
+
+--
+-- Dump dei dati per la tabella `listino_configurati`
+--
+
+INSERT INTO `listino_configurati` (`nome_prodotto`, `da`, `a`, `data_validita`, `id_accessorio`, `prezzo_configurato`, `prezzo_minimo_configurato`, `prezzo_non_configurato`) VALUES
+('BALI', 300, 450, '2013-07-10', 1, 19.5, 17.6, 13.5),
+('BALI', 300, 450, '2013-07-10', 2, 25.2, 23.6, 19.2),
+('BALI', 451, 600, '2013-07-10', 1, 22.3, 20.9, 17.3),
+('BALI', 451, 600, '2013-07-10', 2, 28.9, 26.9, 22.9),
+('BALI', 601, 900, '2013-07-10', 1, 30.9, 25.2, 24.9),
+('BALI', 601, 900, '2013-07-10', 2, 36.6, 31.2, 30.5),
+('BALI', 901, 1200, '2013-07-10', 1, 37.44, 30.3, 31.2),
+('BALI', 901, 1200, '2013-07-10', 2, 44.16, 36.36, 36.8),
+('BALI', 1201, 1500, '2013-07-10', 1, 47.52, 37.92, 39.6),
+('BALI', 1201, 1500, '2013-07-10', 2, 54.84, 46.44, 45.7),
+('BALI', 1501, 2000, '2013-07-10', 1, 60.84, 48.84, 50.7),
+('BALI', 2001, 2500, '2013-07-10', 1, 80.52, 64.92, 67.1),
+('BALI', 2500, 3000, '2013-07-10', 1, 90.36, 72.36, 75.3),
+('LUGANO', 300, 450, '2013-07-10', 1, 20.4, 18.1, 14.4),
+('LUGANO', 300, 450, '2013-07-10', 2, 26.1, 25.1, 20.1),
+('LUGANO', 451, 600, '2013-07-10', 1, 22.9, 20.3, 16.9),
+('LUGANO', 451, 600, '2013-07-10', 2, 28.5, 27.3, 22.5),
+('LUGANO', 601, 900, '2013-07-10', 1, 28.9, 25.3, 22.9),
+('LUGANO', 601, 900, '2013-07-10', 2, 34.6, 32.3, 28.6),
+('LUGANO', 901, 1200, '2013-07-10', 1, 36.12, 30.24, 30.1),
+('LUGANO', 901, 1200, '2013-07-10', 2, 42.84, 37.44, 35.7),
+('LUGANO', 1201, 1500, '2013-07-10', 1, 46.2, 38.4, 38.5),
+('LUGANO', 1201, 1500, '2013-07-10', 2, 52.74, 46.2, 43.95),
+('LUGANO', 1501, 2000, '2013-07-10', 1, 57.12, 47.52, 47.6),
+('LUGANO', 2001, 2500, '2013-07-10', 1, 76.56, 63.36, 63.8),
+('LUGANO', 2501, 3000, '2013-07-10', 1, 86.04, 71.64, 71.7),
+('MALINDI', 300, 372, '2013-07-10', 1, 17.1, 16.1, 11.1),
+('MALINDI', 300, 372, '2013-07-10', 2, 22.7, 22.7, 16.7),
+('MALINDI', 373, 500, '2013-07-10', 1, 22.4, 19.1, 16.4),
+('MALINDI', 373, 500, '2013-07-10', 2, 28.1, 26.1, 22.1),
+('MALINDI', 501, 760, '2013-07-10', 1, 27.8, 23.6, 21.8),
+('MALINDI', 501, 760, '2013-07-10', 2, 33.5, 30.6, 27.5),
+('MALINDI', 761, 1000, '2013-07-10', 1, 34.3, 27.7, 28.3),
+('MALINDI', 761, 1000, '2013-07-10', 2, 40.8, 34.7, 34),
+('MALINDI', 1001, 1500, '2013-07-10', 1, 46.8, 39.6, 39),
+('MALINDI', 1001, 1500, '2013-07-10', 2, 54.6, 47.16, 45.5),
+('MALINDI', 1501, 2000, '2013-07-10', 1, 62.04, 52.44, 51.7),
+('MALINDI', 2001, 2500, '2013-07-10', 1, 78.36, 66.36, 65.3),
+('MALINDI', 2501, 3000, '2013-07-10', 1, 87.96, 74.76, 73.3);
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `menu_sito`
 --
 
@@ -3472,7 +3537,6 @@ INSERT INTO `storico_richieste` (`nome_prodotto`, `motore_led`, `id_tipo_luce`, 
 ('LUGANO', 'B', 4, 1, '1500', '183', '2013-07-02', '4018441', 20),
 ('LUGANO', 'B', 1, 1, '300', '214', '2013-07-02', '4018455', 10),
 ('MALINDI', 'B', 4, 1, '2024', '8552', '2013-07-05', '4018608', 10),
-('MALINDI', 'B', 4, 1, '2024', '8552', '2013-07-05', '4018608', 10),
 ('MALINDI', 'B', 4, 1, '637', '8552', '2013-07-08', '4018658', 10),
 ('MALINDI', 'B', 4, 1, '1329', '8552', '2013-07-08', '4018658', 20),
 ('LUGANO', 'B', 4, 1, '1000', '183', '2013-07-08', '4018667', 10),
@@ -3562,6 +3626,12 @@ ALTER TABLE `ingombri_tecnici`
   ADD CONSTRAINT `ingombri_tecnici_ibfk_1` FOREIGN KEY (`prodotto_lineare`) REFERENCES `prodotti_lineari` (`nome_prodotto`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `ingombri_tecnici_ibfk_2` FOREIGN KEY (`motore_led`) REFERENCES `motore_led` (`codice_motore_led`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `ingombri_tecnici_ibfk_3` FOREIGN KEY (`id_accessorio`) REFERENCES `accessori` (`id_accessorio`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limiti per la tabella `listino_configurati`
+--
+ALTER TABLE `listino_configurati`
+  ADD CONSTRAINT `listino_configurati_ibfk_1` FOREIGN KEY (`nome_prodotto`) REFERENCES `prodotti_lineari` (`nome_prodotto`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `prodotto_lineare_accessori`

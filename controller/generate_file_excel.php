@@ -5,13 +5,45 @@
 	
 	date_default_timezone_set('Europe/Rome');
 	$nome_file=trim($_POST['nome_file']);
-		
-	$sql=$dbh->query("	SELECT 	richieste_ordini_produzione.data_inserimento,
+	$query_sql="";
+	
+	#creo il file in funzione del destinatario... Per CODUTTI qualche cosa in più
+	if ($nome_file=="configurati_per_Codutti"){
+		$query_sql="	SELECT 	richieste_ordini_produzione.data_inserimento,
 								storico_richieste.codice_cliente,
 								richieste_ordini_produzione.nome_prodotto,
 								richieste_ordini_produzione.codice_pf_finale,
-								richieste_ordini_produzione.motore_led,
-								motore_led.descrizione_motore,
+								motore_led.descrizione_motore as Motore_Led,
+								richieste_ordini_produzione.lunghezza as lunghezza_barra,								
+								richieste_ordini_produzione.potenza_barra_led,								
+								tipo_luce.tipo_luce as Temperatura_colore,
+								accessori.descrizione as Accessorio,
+								schermo.descrizione_schermo as Schermo,
+								richieste_ordini_produzione.quantita as Quantita_richiesta,
+								listino_configurati.prezzo_configurato,
+								listino_configurati.prezzo_minimo_configurato,
+								listino_configurati.prezzo_non_configurato
+
+						FROM 	richieste_ordini_produzione,tipo_luce,schermo,accessori,motore_led,storico_richieste,listino_configurati
+						WHERE 	
+								tipo_luce.id_tipo_luce=richieste_ordini_produzione.id_tipo_luce
+							AND	motore_led.codice_motore_led=richieste_ordini_produzione.motore_led
+							AND	storico_richieste.ordine_cliente=richieste_ordini_produzione.numero_ordine_cliente
+							AND storico_richieste.riga_ordine_cliente=richieste_ordini_produzione.riga_ordine_cliente
+							AND accessori.id_accessorio=richieste_ordini_produzione.id_accessorio
+							AND richieste_ordini_produzione.codice_schermo=schermo.codice_schermo
+							AND	listino_configurati.nome_prodotto=richieste_ordini_produzione.nome_prodotto
+							AND listino_configurati.nome_prodotto=storico_richieste.nome_prodotto
+							
+							AND richieste_ordini_produzione.lunghezza>=listino_configurati.da
+							AND richieste_ordini_produzione.lunghezza<=listino_configurati.a
+							AND richieste_ordini_produzione.id_accessorio=listino_configurati.id_accessorio";
+	}else{
+		$query_sql="	SELECT 	richieste_ordini_produzione.data_inserimento,
+								storico_richieste.codice_cliente,
+								richieste_ordini_produzione.nome_prodotto,
+								richieste_ordini_produzione.codice_pf_finale,								
+								motore_led.descrizione_motore as Motore_Led,
 								richieste_ordini_produzione.lunghezza as lunghezza_barra,								
 								richieste_ordini_produzione.potenza_barra_led,								
 								tipo_luce.tipo_luce as Temperatura_colore,
@@ -26,8 +58,10 @@
 							AND	storico_richieste.ordine_cliente=richieste_ordini_produzione.numero_ordine_cliente
 							AND storico_richieste.riga_ordine_cliente=richieste_ordini_produzione.riga_ordine_cliente
 							AND accessori.id_accessorio=richieste_ordini_produzione.id_accessorio
-							AND richieste_ordini_produzione.codice_schermo=schermo.codice_schermo
-					");
+							AND richieste_ordini_produzione.codice_schermo=schermo.codice_schermo";
+	}
+		
+	$sql=$dbh->query($query_sql);
 
 	$sql->execute();
 
