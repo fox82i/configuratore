@@ -17,6 +17,77 @@ include("include/dbconfig.inc.php");
 				});
 			}
 			
+			
+			
+			function Data_into_Excel(){
+			
+				var rows = $('#dg').datagrid('getSelections'); 
+				
+				if (rows.length){
+					getFile('controller/esporta_dati_selezionati_excel.php.php',getParameters($('#dg').datagrid('getSelections')));
+				}else{
+					alert ('No rows selected');
+				}
+			}
+
+			function getParameters(parameters){
+			
+					var dati= new Array();
+				
+					for (var i=0; i<parameters.length; i++){
+						dati[i]=parameters[i].codice_pf_finale + \"|\" + parameters[i].motore_led + \"|\" + parameters[i].tipo_di_touch_led + \"|\" + parameters[i].lunghezza + \"|\" + parameters[i].Temperatura_colore + \"|\" + parameters[i].tensione_alimentazione + \"|\" + parameters[i].potenza_barra_led + \"|\" + parameters[i].K_abbreviato ;
+					}
+					return dati;
+			
+			}
+			
+			
+			function getFile(address,parameters){
+				
+				$.messager.progress({text:'Processing. Please wait...'});
+				$.post(address,
+						parameters,
+							function(data){
+								$.messager.progress('close');
+								if(isNaN(data)==false){
+									//javascript:window.location='getFile.php?p='+data;
+									$('#dg').datagrid('reload'); 
+								} else {
+									$.messager.alert('ERROR',data);
+								}
+							}	
+						);
+			
+			}
+			function exportData_into_Excel_old(){
+				var rows = $('#dg').datagrid('getSelections'); 
+				
+				if (rows.length>0){
+					var dati= new Array();
+				
+					for (var i=0; i<rows.length; i++){
+						dati[i]=rows[i].codice_pf_finale + \"|\" + rows[i].motore_led + \"|\" + rows[i].tipo_di_touch_led + \"|\" + rows[i].lunghezza + \"|\" + rows[i].Temperatura_colore + \"|\" + rows[i].tensione_alimentazione + \"|\" + rows[i].potenza_barra_led + \"|\" + rows[i].K_abbreviato ;
+					}
+					$.post('controller/esporta_dati_selezionati_excel.php',
+							dati_riga:dati,
+											function(result){  
+														if (result.success){  															
+															$('#dg').datagrid('reload');    // reload the user data  
+															alert('Dati correttamente esportati');
+															
+														} else {  
+															$.messager.show({   // show error message  
+																			title: 'Error',  
+																			msg: result.errorMsg  
+																			});  
+														}  
+													},'json');  
+				}else{
+					alert('Nessuna riga selezionata');
+				}
+				
+			}
+			
 			</script>
 			";
 			
@@ -59,8 +130,13 @@ include("include/dbconfig.inc.php");
 									<p><strong>Questi dati devono essere inserite nel database etichette. Chiedere al tecnico la localizzazione del db etichette</strong></p>
 									
 									<table id="dg" title="Dati etichette no ETL" class="easyui-datagrid" style="width:auto;height:auto"  										
-										pagination="true"   iconCls="icon-search" toolbar="#toolbar" singleSelect="true"
-										url="controller/enumerate_dati_etichetta_no_etl.php" >  
+										pagination="true"   iconCls="icon-search" toolbar="#toolbar" 
+										url="controller/enumerate_dati_etichetta_no_etl.php" singleSelect="multiple"  >  
+										<thead frozen="true">  
+											<tr>					
+												<th field="selezionato"  checkbox="true" ></td>
+											</tr>
+										</thead>
 										<thead>  
 											<tr>
 												
@@ -81,7 +157,8 @@ include("include/dbconfig.inc.php");
 										<span>Codice articolo:</span>  
 										<input id="codice_articolo" style="line-height:15px;border:1px solid #ccc">  
 										<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Search</a>  
-										
+										<br/>
+										<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="Data_into_Excel()">Esporta  in Excel</a>  
 		        					</div>  
 									</div>
 									</div>

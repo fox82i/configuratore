@@ -70,14 +70,14 @@
 				break;
 				
 			case "1"://caso inserimento già effettuato
-				
+				#and data_richiesta=(SELECT Max(data_richiesta) AS MaxDidata FROM storico_richieste)
 				$sql=$dbh->query("SELECT * FROM storico_richieste WHERE nome_prodotto='".$nome_prodotto."' and 
 																	motore_led='".$motore_led."' and
 																	id_tipo_luce='".$temperatura_colore."' and
 																	id_accessorio='".$accessorio."'
 																	and lunghezza='".$lunghezza."'
 																	and codice_cliente='".$codice_cliente."'
-																	and data_richiesta=(SELECT Max(data_richiesta) AS MaxDidata FROM storico_richieste)
+																	
 																	LIMIT 1");
 				$rows=$sql->fetchAll();
 				

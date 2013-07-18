@@ -7,6 +7,17 @@
 	$nome_file=trim($_POST['nome_file']);
 	$query_sql="";
 	
+	$dbName="storico_venduto";
+	#$dbName="\\\demosrv\\motori\\condovnw_SAP_FINALE_NEW.accdb";
+	/*if (is_file($dbName)) {
+    echo "File exists.\r\n";
+	}
+	else {
+		echo "File does not exist.\r\n";
+	}
+	$db_access = new PDO("odbc:DRIVER={Microsoft Access Driver (*.accdb)}; DBQ=$dbName; Uid=Admin; Pwd=;");
+	#$db_access = new PDO("odbc:Driver={Microsoft Access Driver (*.mdb, *.accdb)};Dbq=DBQ=$dbName;Uid=Admin");
+	*/	
 	#creo il file in funzione del destinatario... Per CODUTTI qualche cosa in più
 	if ($nome_file=="configurati_per_Codutti"){
 		$query_sql="	SELECT 	richieste_ordini_produzione.data_inserimento,
@@ -129,11 +140,6 @@
 		
 	}
 	
-	
-	
-	
-					
-					
 					
 	// Set document properties
 	$objPHPExcel->getProperties()->setCreator("Alessandro Fornasier")

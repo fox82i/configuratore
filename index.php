@@ -144,7 +144,7 @@
 								<br />****** SERVER RESPONSE ******<br /><br />
 								
 									<div id="loading" style="display:none;"></div>	
-									<div id="output"> </div>
+									<div id="output"></div>
 									<div id="output2" style="color: blue;"> </div>
 							</div>	
 						</div>
