@@ -110,17 +110,23 @@
 			
 		});	
 		
+		//pulsante di invio 
 		$("form#select_form").submit(function(){
 			if(prodotto){
 				var accessorio=$("select#accessorio option:selected").attr('value');
 				var lunghezza_barra=$("input:text#lunghezza").val();
 				
-				//concateno i valori per l'elaborazione
-				var dato=prodotto+'|'+accessorio+'|'+lunghezza_barra;
-				
+				if (prodotto !='BALI'){
+					//concateno i valori per l'elaborazione per prodotti non bali
+					var dato=prodotto+'|'+accessorio+'|'+lunghezza_barra;
+				}else{
+					//concateno prodotti per il prodotto BALI
+					var tipo_fissaggio=$("select#fissaggio option:selected").attr('value');
+					var dato=prodotto+'|'+accessorio+'|'+lunghezza_barra+'|'+tipo_fissaggio;
+				}
+				//invio il tutto 
 				$.post("select.php", {dato_per_prezzo:dato}, function(data){
-			
-					$("#result").html(data);	
+						$("#result").html(data);	
 					});
 			}
 			else
