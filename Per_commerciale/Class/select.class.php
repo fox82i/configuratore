@@ -39,12 +39,13 @@ class PrezzoProdottoConfigurabile
 				foreach($dbh->query($select) as $row) {				
 					$prodotti .= '<option value="' . $row['nome_prodotto'] . '">' . utf8_encode($row['nome_prodotto']) . '</option>';
 				}
+				return $prodotti;
 			}
 			catch(PDOException $e) {
 				echo $e->getMessage();
 				die();
 			}	
-			return $prodotti;
+			
 		}
 		
 		public function showMotoreLed()
@@ -61,12 +62,13 @@ class PrezzoProdottoConfigurabile
 				
 					$motore_led .='<option value="' . $row['codice_motore_led'] . '">' . utf8_encode($row['descrizione_motore']) . '</option>';
 				}
+				return $motore_led;
 			}
 			catch(PDOException $e) {
 				echo $e->getMessage();
 				die();
 			}
-			return $motore_led;
+			
 		}
 		
 		public function showTemperaturaLuce()
@@ -87,12 +89,13 @@ class PrezzoProdottoConfigurabile
 				foreach($dbh->query($select) as $row) {				
 					$temperaturaLuce .='<option value="' . $row['id_tipo_luce'] . '">' . utf8_encode($row['descrittivo']) . '</option>\n';
 				}
+				return $temperaturaLuce;
 			}
 			catch(PDOException $e) {
 				echo $e->getMessage();
 				die();
 			}
-			return $temperaturaLuce;
+			
 			
 		}
 		
@@ -109,12 +112,13 @@ class PrezzoProdottoConfigurabile
 				foreach($dbh->query($select) as $row) {					
 					$accessorio .='<option value="' . $row['id_accessorio'] . '">' . utf8_encode($row['descrizione']) . '</option>\n';
 				}
+				return $accessorio;
 			}
 			catch(PDOException $e) {
 				echo $e->getMessage();
 				die();
 			}
-			return $accessorio;
+			
 		}
 		
 		public function showSchermo()
@@ -133,12 +137,13 @@ class PrezzoProdottoConfigurabile
 				foreach($dbh->query($select) as $row) {					
 					$schermo .='<option value="' . $row['codice_schermo'] . '">' . utf8_encode($row['descrizione_schermo']) . '</option>\n';
 				}
+				return $schermo;
 			}
 			catch(PDOException $e) {
 				echo $e->getMessage();
 				die();
 			}
-			return $schermo;
+			
 		}
 		
 		public function showSistemaFissaggio()
@@ -159,13 +164,14 @@ class PrezzoProdottoConfigurabile
 					
 					$fissaggio .='<option value="' . $row['codice_fissaggio'] . '">' . utf8_encode($row['descrizione_fissaggio']) . '</option>\n';
 				}
+				return $fissaggio;
 			}
 			catch(PDOException $e) {
 				echo $e->getMessage();
 				die();
 			}
 				
-			return $fissaggio;
+			
 		}
 		
 		
@@ -182,9 +188,13 @@ class PrezzoProdottoConfigurabile
 			
 			$dati_prodotto=array();
 			$response="";
-			$dati_prodotto=preg_split("/\|/",$dati_prezzo);
 			
-			$prodotto_ok=$this->prodotto_fattibile($dati_prodotto[0],(int)$dati_prodotto[2]);
+			#scompongo i dati
+			$dati_prodotto = preg_split("/\|/",$dati_prezzo);
+			
+			#determino fattibilità prodotto
+			$prodotto_ok = $this->prodotto_fattibile($dati_prodotto[0],(int)$dati_prodotto[2]);
+			
 			
 			switch ($prodotto_ok['error']){
 				#misura minore del minimo
@@ -217,6 +227,7 @@ class PrezzoProdottoConfigurabile
 							";
 					}else{
 						#in funzione del tipo di supporto BALI
+						#Standard
 						if ($dati_prodotto[3]=='ST'){
 							$select="
 								SELECT 	listino_configurati.nome_prodotto as Prodotto, listino_configurati.prezzo_configurato as Prezzo_Consigliato, listino_configurati.prezzo_minimo_configurato as Prezzo_Minimo
@@ -230,6 +241,7 @@ class PrezzoProdottoConfigurabile
 									AND '".$dati_prodotto[2]."'>= regole_sistema_fissaggio.da
 									AND '".$dati_prodotto[2]."'<= regole_sistema_fissaggio.a
 							";
+						#supporto Magneti
 						}else{
 							$select="
 								SELECT 	listino_configurati.nome_prodotto as Prodotto, 
@@ -247,29 +259,44 @@ class PrezzoProdottoConfigurabile
 									";
 						}
 					}
-			
-					$query=$dbh->query($select);
-					$res=$query->fetchAll();
-			
-					if (count($res)>0){
-						$response=
-							"
-								<h2 style=\"color:green;\">Prezzo consigliato ". number_format($res[0]['Prezzo_Consigliato'],2,',','')."&euro; </h2>
-								<h2 style=\"color:red;\">Prezzo speciale ".number_format($res[0]['Prezzo_Minimo'],2,',','')."&euro; </h2>
-							";
-						return $response;
-					}else{
 					
-						return "<h2 style=\"color:red;\">Lampada non fattibile</h2>
-								<p> L'accessorio TOUCH pu&ograve; essere montato su lampade la cui lunghezza massima &egrave; di: 1500mm</p>
+					#motore funzione di visualizzazione 
+					try
+					{
+						$query=$dbh->query($select);
+						$res=$query->fetchAll();
+			
+						if (count($res)>0){
+							$response=
+								"	<table border=\"0\">
+										<tr>
+											<td><div><h2 style=\"color:green;\">Prezzo consigliato</h2></td>
+											<td><h2 style=\"color:green;\">". number_format($res[0]['Prezzo_Consigliato'],2,',','')."&euro; </h2>
+											<td></td>
+										</tr>
+										<tr>
+											<td><h2 style=\"color:red;\">Prezzo speciale</h2></td>
+											<td><h2 style=\"color:red;\">".number_format($res[0]['Prezzo_Minimo'],2,',','')."&euro;</h2></td>
+											<td><h3 style=\"color:red;\"> (minimo consentito)</h3></td>
+										</tr>
+									</table>
 								";
+							return $response;
+						}else{
+						
+							return "<h2 style=\"color:red;\">Lampada non fattibile</h2>
+									<p> L'accessorio TOUCH pu&ograve; essere montato su lampade la cui lunghezza massima &egrave; di: 1500mm</p>
+									";
+						}
+					}
+					catch(PDOException $e) {
+						echo $e->getMessage();
+						die();
 					}
 					break;
-			
-				
 			}
-		
 		}
+		
 		private function prodotto_fattibile($nome_prodotto,$misura)
 		{
 		
@@ -280,28 +307,33 @@ class PrezzoProdottoConfigurabile
 						FROM prodotti_lineari
 						WHERE nome_prodotto='".$nome_prodotto."' and obsoleta=0	
 					";
-					
-			$query=$dbh->query($select);
-			$misure_prodotto=$query->fetchAll();
+			try
+			{	
+				$query=$dbh->query($select);
+				$misure_prodotto=$query->fetchAll();
 			
-			switch (true){
+				switch (true){
 			
-				case ($misura>=$misure_prodotto[0]['da'] and $misura<=$misure_prodotto[0]['a']):
-					$res=array('error'=>'2','misura_consentita'=>'OK');
-					return $res;
-					break;
+					case ($misura>=$misure_prodotto[0]['da'] and $misura<=$misure_prodotto[0]['a']):
+						$res=array('error'=>'2','misura_consentita'=>'OK');
+						return $res;
+						break;
 					
-				case $misura<$misure_prodotto[0]['a']:
-					$res=array('error'=>'0','misura_consentita'=>$misure_prodotto[0]['da']);
-					return $res;
-					break;
+					case $misura<$misure_prodotto[0]['a']:
+						$res=array('error'=>'0','misura_consentita'=>$misure_prodotto[0]['da']);
+						return $res;
+						break;
 					
-				case $misura>$misure_prodotto[0]['da']:
-					$res=array('error'=>'1','misura_consentita'=>$misure_prodotto[0]['a']);
-					return $res;					
-					break;
-				
-				
+					case $misura>$misure_prodotto[0]['da']:
+						$res=array('error'=>'1','misura_consentita'=>$misure_prodotto[0]['a']);
+						return $res;					
+						break;
+				}
+			}
+			catch (PDOException $e) 
+			{
+				echo $e->getMessage();
+				die();
 			}
 		}
 		

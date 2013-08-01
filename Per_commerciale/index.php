@@ -20,8 +20,8 @@
 		
 		var prodotto='';
 		
-		$("select#motore_led").html(scegli);
-		$("select#motore_led").attr("disabled", "disabled");
+	/*	$("select#motore_led").html(scegli);
+		$("select#motore_led").attr("disabled", "disabled");*/
 		$("select#temp_colore").html(scegli);
 		$("select#temp_colore").attr("disabled", "disabled");
 		$("select#accessorio").html(scegli);
@@ -31,7 +31,7 @@
 		$("select#fissaggio").html(scegli);
 		$("select#fissaggio").attr("disabled", "disabled");
 	
-		
+	/*	
 		$("select#nome_prodotto").change(function(){
 			
 			$("select#temp_colore").html(attendere);
@@ -50,18 +50,19 @@
 				$("select#motore_led").html(data);	
 				
 			});
-		});	
+		});	*/
 		
-		$("select#motore_led").change(function(){
-		
+		$("select#nome_prodotto").change(function(){
+			
 			$("select#accessorio").html(attendere);
 			$("select#accessorio").attr("disabled", "disabled");
 			$("select#schermo").html(attendere);
 			$("select#schermo").attr("disabled", "disabled");
 			$("select#fissaggio").html(attendere);
 			$("select#fissaggio").attr("disabled", "disabled");
-			
-				var motore_led = $("select#motore_led option:selected").attr('value');
+			prodotto = $("select#nome_prodotto option:selected").attr('value');
+			var motore_led='B'
+				//var motore_led = $("select#motore_led option:selected").attr('value');
 			$.post("select.php", {motore_led:motore_led}, function(data){
 				$("select#temp_colore").removeAttr("disabled"); 
 				$("select#temp_colore").html(data);	
@@ -70,7 +71,9 @@
 		});	
 		
 		$("select#temp_colore").change(function(){
-					
+		
+			$("select#accessorio").html(attendere);
+			$("select#accessorio").attr("disabled", "disabled");		
 			$("select#schermo").html(attendere);
 			$("select#schermo").attr("disabled", "disabled");
 			$("select#fissaggio").html(attendere);
@@ -84,7 +87,8 @@
 		});	
 		
 		$("select#accessorio").change(function(){
-						
+			$("select#schermo").html(attendere);
+			$("select#schermo").attr("disabled", "disabled");		
 			$("select#fissaggio").html(attendere);
 			$("select#fissaggio").attr("disabled", "disabled");
 			
@@ -96,7 +100,9 @@
 		});	
 		
 		$("select#schermo").change(function(){
-				
+		
+			$("select#fissaggio").html(attendere);
+			$("select#fissaggio").attr("disabled", "disabled");	
 			if (prodotto =='BALI'){	
 					
 				$.post("select.php", {fissaggio:prodotto}, function(data){
@@ -163,12 +169,12 @@
 				<?php echo $opt->ShowProdotti(); ?>
 			</select>
 	</div>
-	<div class="element-select"  title="Motori led attualmente disponibili">
-		<label class="title">Motore Led<span class="required">*</span></label>
-			<select name="motore_led" required="required" id="motore_led">
-				<option>Scegli:</option>
-			</select>
-	</div>
+	<!- <div class="element-select"  title="Motori led attualmente disponibili">
+	<!-	<label class="title"><!-Motore Led<span class="required"><!-*</span><!-</label>
+		<!-	<select name="motore_led" required="required" id="motore_led">
+			<!-	<option><!-Scegli:</option>
+			<!-</select>
+	<!-</div>
 	<div class="element-select"  title="gradazione in gradi K">
 		<label class="title">Temperatura luce<span class="required">*</span></label>
 			<select name="temp_colore" required="required" id="temp_colore">

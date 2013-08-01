@@ -69,7 +69,8 @@
 							AND	storico_richieste.ordine_cliente=richieste_ordini_produzione.numero_ordine_cliente
 							AND storico_richieste.riga_ordine_cliente=richieste_ordini_produzione.riga_ordine_cliente
 							AND accessori.id_accessorio=richieste_ordini_produzione.id_accessorio
-							AND richieste_ordini_produzione.codice_schermo=schermo.codice_schermo";
+							AND richieste_ordini_produzione.codice_schermo=schermo.codice_schermo
+						ORDER BY richieste_ordini_produzione.nome_prodotto,richieste_ordini_produzione.lunghezza";
 	}
 		
 	$sql=$dbh->query($query_sql);
@@ -106,13 +107,17 @@
 	# STATISTICHE DI FREQUENZA  DA METTERE IN UN SECONDO FOGLIO
 	$sql=$dbh->query("
 						SELECT 	storico_richieste.nome_prodotto,
-								storico_richieste.lunghezza, 
+								storico_richieste.lunghezza,
+								accessori.descrizione as Accessorio,
+								schermo.descrizione_schermo as Schermo,
 								count(storico_richieste.lunghezza) as Frequenza_lunghezza,
 								SUM(richieste_ordini_produzione.quantita) as QTA_richiesta
-						FROM 	storico_richieste,richieste_ordini_produzione
+						FROM 	storico_richieste,richieste_ordini_produzione,accessori,schermo
 						WHERE 	storico_richieste.ordine_cliente=richieste_ordini_produzione.numero_ordine_cliente
 							AND storico_richieste.riga_ordine_cliente=richieste_ordini_produzione.riga_ordine_cliente
-						GROUP BY richieste_ordini_produzione.lunghezza
+							AND richieste_ordini_produzione.id_accessorio=accessori.id_accessorio
+							AND richieste_ordini_produzione.codice_schermo=schermo.codice_schermo
+						GROUP BY richieste_ordini_produzione.lunghezza,accessori.descrizione,schermo.descrizione_schermo
 						ORDER BY Frequenza_lunghezza DESC
 					");
 	
