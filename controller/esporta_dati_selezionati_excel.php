@@ -4,6 +4,12 @@
 	require_once '../Excel_Classes/PHPExcel.php';
 	date_default_timezone_set('Europe/Rome');
 	
+	#decodifico il vettore JSON
+	$dati= json_decode($_REQUEST['dati_excel']);
+	
+	//$dati_prodotto = preg_split("/\|/",$dati);
+	//	print_r($dati);
+	
 	
 	
 	// Create new PHPExcel object
@@ -11,16 +17,25 @@
 
 	$objWorksheet=$objPHPExcel->getActiveSheet();
 	
-	//intestazioni di colonna
-	$objWorksheet->setCellValue('A1','Codice pf finale');
-	$objWorksheet->setCellValue('B1','Tipo di barra LED');
-	$objWorksheet->setCellValue('C1','Tipo di touch led');
-	$objWorksheet->setCellValue('D1','Lunghezza lampada');
-	$objWorksheet->setCellValue('E1','Temperatura colore');
-	$objWorksheet->setCellValue('F1','Tensione alimentazione');
-	$objWorksheet->setCellValue('G1','Potenza barra led');
-	$objWorksheet->setCellValue('H1','K abbreviato');
+	$riga=1;
+	$col='A';
 	
+	//intestazioni di colonna: Non sapendo quante colonne vengono passate generalizzo l'estrazione delle intestazioni
+	foreach ($dati[0] as $key => $val){
+		$objWorksheet->setCellValue($col.$riga,$key);
+		$col++;
+	}
+	# MI POSIZIONO SULLA SECONDA RIGA
+	$riga=2;
+	foreach($dati as $valore){
+		$col='A';
+		foreach ($valore as $key => $val){
+			$objWorksheet->setCellValue($col.$riga, $val);
+			$col++;
+		}
+		$riga++;
+		
+	}
 	
 	
 	// Set document properties
@@ -47,4 +62,6 @@
 
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	$objWriter->save('php://output');
+	
+	
 ?>

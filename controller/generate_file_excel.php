@@ -87,6 +87,7 @@
 
 	$riga=1;
 	$col='A';
+	
 	# PRIMA RIGA CON INTESTAZIONE DEI CAMPI QUERY
 	foreach ($analisi[0] as $key => $val){
 		$objWorksheet->setCellValue($col.$riga,$key);

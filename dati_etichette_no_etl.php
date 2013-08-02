@@ -10,6 +10,7 @@ include("include/dbconfig.inc.php");
 			<script type=\"text/javascript\" src=\"js/crud_jquery/plugins/datagrid/datagrid-detailview.js\"></script>
 			
 			<script type=\"text/javascript\" language=\"javascript\">
+			
 			function doSearch(){
 				$('#dg').datagrid('load',{
 					
@@ -19,78 +20,118 @@ include("include/dbconfig.inc.php");
 			
 			
 			
-			function Data_into_Excel(){
-			
-				var rows = $('#dg').datagrid('getSelections'); 
-				
-				if (rows.length){
-					getFile('controller/esporta_dati_selezionati_excel.php.php',getParameters($('#dg').datagrid('getSelections')));
-				}else{
-					alert ('No rows selected');
-				}
-			}
 
 			function getParameters(parameters){
-			
+					//var array_associativo=new Array(\"Codice pf finale\",\"Tipo di barra LED\",\"Tipo di touch led\",\"Lunghezza lampada\",\"Temperatura colore\",\"Tensione alimentazione\",\"Potenza barra led\",\"K abbreviato\");
 					var dati= new Array();
-				
+					
+					
 					for (var i=0; i<parameters.length; i++){
-						dati[i]=parameters[i].codice_pf_finale + \"|\" + parameters[i].motore_led + \"|\" + parameters[i].tipo_di_touch_led + \"|\" + parameters[i].lunghezza + \"|\" + parameters[i].Temperatura_colore + \"|\" + parameters[i].tensione_alimentazione + \"|\" + parameters[i].potenza_barra_led + \"|\" + parameters[i].K_abbreviato ;
+						//dati[i]= parameters[i].codice_pf_finale + \"|\" + parameters[i].motore_led + \"|\" + parameters[i].tipo_di_touch_led + \"|\" + parameters[i].lunghezza + \"|\" + parameters[i].Temperatura_colore + \"|\" + parameters[i].tensione_alimentazione + \"|\" + parameters[i].potenza_barra_led + \"|\" + parameters[i].K_abbreviato + \"|\" ;
+						 dati[i]= {
+							'codice_pf':parameters[i].codice_pf_finale,
+							'motore_led': parameters[i].motore_led,
+							'tipo_touch': parameters[i].tipo_di_touch_led,
+							'lunghezza': parameters[i].lunghezza,
+							'temp_colore':parameters[i].Temperatura_colore,
+							'tensione': parameters[i].tensione_alimentazione,
+							'potenza': parameters[i].potenza_barra_led,
+							'k': parameters[i].K_abbreviato
+						}
 					}
+					
 					return dati;
 			
 			}
 			
 			
-			function getFile(address,parameters){
-				
-				$.messager.progress({text:'Processing. Please wait...'});
-				$.post(address,
-						parameters,
-							function(data){
-								$.messager.progress('close');
-								if(isNaN(data)==false){
-									//javascript:window.location='getFile.php?p='+data;
-									$('#dg').datagrid('reload'); 
-								} else {
-									$.messager.alert('ERROR',data);
-								}
-							}	
-						);
 			
+			
+		function php_serialize(obj){
+			var string = '';
+
+			if (typeof(obj) == 'object') {
+				if (obj instanceof Array) {
+					string = 'a:';
+					tmpstring = '';
+					count = 0;
+					for (var key in obj) {
+						tmpstring += php_serialize(key);
+						tmpstring += php_serialize(obj[key]);
+						count++;
+				}
+				string += count + ':{';
+				string += tmpstring;
+				string += '}';
+			} else if (obj instanceof Object) {
+				classname = obj.toString();
+
+				if (classname == '[object Object]') {
+					classname = 'StdClass';
+				}
+
+				string = 'O:' + classname.length + ':\"' + classname + '\":';
+				tmpstring = '';
+				count = 0;
+				for (var key in obj) {
+					tmpstring += php_serialize(key);
+						if (obj[key]) {
+							tmpstring += php_serialize(obj[key]);
+						} else {
+							tmpstring += php_serialize('');
+						}
+					count++;
+				}
+				string += count + ':{' + tmpstring + '}';
+			
+			}} else {
+				switch (typeof(obj)) {
+					case 'number':
+						if (obj - Math.floor(obj) != 0) {
+							string += 'd:' + obj + ';';
+						} else {
+							string += 'i:' + obj + ';';
+						}
+						break;
+					case 'string':
+						string += 's:' + obj.length + ':\"' + obj + '\";';
+						break;
+					case 'boolean':
+						if (obj) {
+							string += 'b:1;';
+						} else {
+							string += 'b:0;';
+						}
+						break;
+				}
 			}
-			function exportData_into_Excel_old(){
+
+			return string;
+		}
+
+			function exportData_into_Excel(){
+				var dati_excel= new Array();
 				var rows = $('#dg').datagrid('getSelections'); 
 				
 				if (rows.length>0){
-					var dati= new Array();
+					//codifico l'array associativo in un JSON vettore... lato PHP devo fare la decodifica
+					dati_excel= JSON.stringify(getParameters(rows));
+					javascript:window.location='controller/esporta_dati_selezionati_excel.php?dati_excel='+JSON.stringify(getParameters(rows));
 				
-					for (var i=0; i<rows.length; i++){
-						dati[i]=rows[i].codice_pf_finale + \"|\" + rows[i].motore_led + \"|\" + rows[i].tipo_di_touch_led + \"|\" + rows[i].lunghezza + \"|\" + rows[i].Temperatura_colore + \"|\" + rows[i].tensione_alimentazione + \"|\" + rows[i].potenza_barra_led + \"|\" + rows[i].K_abbreviato ;
-					}
-					$.post('controller/esporta_dati_selezionati_excel.php',
-							dati_riga:dati,
-											function(result){  
-														if (result.success){  															
-															$('#dg').datagrid('reload');    // reload the user data  
-															alert('Dati correttamente esportati');
-															
-														} else {  
-															$.messager.show({   // show error message  
-																			title: 'Error',  
-																			msg: result.errorMsg  
-																			});  
-														}  
-													},'json');  
+					
+					//for (i in dati_excel){
+					//for (j in dati_excel[i]){
+						//console.log(j+ '=' + dati_excel[i][j]);
+					//}}
 				}else{
 					alert('Nessuna riga selezionata');
 				}
 				
 			}
-			
 			</script>
 			";
-			
+		#cambiare richiesta da get a post con windows.location
+		#http://www.webdeveloper.com/forum/showthread.php?81472-window-location-POST-request
 			
 			include ("Template/chiudi_head.php");
 			return_title("Configuratore prodotti lineari - Dati etichette no ETL");
@@ -158,7 +199,7 @@ include("include/dbconfig.inc.php");
 										<input id="codice_articolo" style="line-height:15px;border:1px solid #ccc">  
 										<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Search</a>  
 										<br/>
-										<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="Data_into_Excel()">Esporta  in Excel</a>  
+										<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="exportData_into_Excel()">Esporta  in Excel</a>  
 		        					</div>  
 									</div>
 									</div>
