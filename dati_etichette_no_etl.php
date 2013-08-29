@@ -108,6 +108,25 @@ include("include/dbconfig.inc.php");
 
 			return string;
 		}
+			function post(URL, PARAMS) {
+				var temp=document.createElement('form');
+				var opt=document.createElement('textarea');
+				temp.action=URL;
+				temp.method='POST';
+				temp.style.display='none';
+				//for(var x in PARAMS) {
+					//var opt=document.createElement('hiddenfield');
+					//opt.name=x;
+					//opt.value=PARAMS[x];
+					//temp.appendChild(opt);
+				//}
+				opt.name='dati_excel';
+				opt.value=PARAMS;
+				temp.appendChild(opt);
+				document.body.appendChild(temp);
+				temp.submit();
+				return temp;
+			}
 
 			function exportData_into_Excel(){
 				var dati_excel= new Array();
@@ -116,8 +135,10 @@ include("include/dbconfig.inc.php");
 				if (rows.length>0){
 					//codifico l'array associativo in un JSON vettore... lato PHP devo fare la decodifica
 					dati_excel= JSON.stringify(getParameters(rows));
-					javascript:window.location='controller/esporta_dati_selezionati_excel.php?dati_excel='+JSON.stringify(getParameters(rows));
-				
+					//javascript:window.location='controller/esporta_dati_selezionati_excel.php?dati_excel='+JSON.stringify(getParameters(rows));
+					
+					//window.location con metodo POST
+					post('controller/esporta_dati_selezionati_excel.php',JSON.stringify(getParameters(rows)));
 					
 					//for (i in dati_excel){
 					//for (j in dati_excel[i]){
@@ -199,7 +220,9 @@ include("include/dbconfig.inc.php");
 										<input id="codice_articolo" style="line-height:15px;border:1px solid #ccc">  
 										<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Search</a>  
 										<br/>
-										<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="exportData_into_Excel()">Esporta  in Excel</a>  
+										
+											<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="exportData_into_Excel()">Esporta  in Excel</a>  
+										
 		        					</div>  
 									</div>
 									</div>

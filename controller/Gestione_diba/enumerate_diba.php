@@ -4,7 +4,7 @@
 	$page=isset($_POST['page']) ? intval($_POST['page']): 1;
 	$rows=isset($_POST['rows']) ? intval($_POST['rows']): 10;
 	$sort = isset($_POST['sort']) ? strval($_POST['sort']) : 'codice_PF_finale';  
-	$order = isset($_POST['order']) ? strval($_POST['order']) : 'asc';  
+	$order = isset($_POST['order']) ? strval($_POST['order']) : 'desc';  
 	
 	
 	
@@ -42,7 +42,7 @@
 						WHERE 	richieste_ordini_produzione.codice_pf_finale =diba_tecnica.codice_pf_finale
 							AND	".$where_ricerca."
 						GROUP BY diba_tecnica.codice_PF_finale
-						ORDER BY diba_tecnica.".$sort." ".$order."
+						ORDER BY diba_tecnica.".$sort." ".$order.", diba_tecnica.riga_ordine_cliente asc
 						LIMIT  ".$offset.",".$rows.";
 					 ");
 	$sql->execute();
