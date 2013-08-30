@@ -1,22 +1,27 @@
 ﻿/**
- * jQuery EasyUI 1.3.2
+ * jQuery EasyUI 1.3.4
  * 
  * Copyright (c) 2009-2013 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL or commercial licenses
- * To use it on other terms please contact us: jeasyui@gmail.com
+ * To use it on other terms please contact us: info@jeasyui.com
  * http://www.gnu.org/licenses/gpl.txt
  * http://www.jeasyui.com/license_commercial.php
  *
  */
 (function($){
-function _1(_2){
-_2.each(function(){
+$.fn._remove=function(){
+return this.each(function(){
 $(this).remove();
-if($.browser.msie){
+try{
 this.outerHTML="";
 }
+catch(err){
+}
 });
+};
+function _1(_2){
+_2._remove();
 };
 function _3(_4,_5){
 var _6=$.data(_4,"panel").options;
@@ -155,6 +160,9 @@ var _1c=$.data(_1b,"panel");
 var _1d=_1c.options;
 if(_1d.href){
 if(!_1c.isLoaded||!_1d.cache){
+if(_1d.onBeforeLoad.call(_1b)==false){
+return;
+}
 _1c.isLoaded=false;
 _1e(_1b);
 if(_1d.loadingMessage){
@@ -193,6 +201,7 @@ $(this).menubutton("destroy");
 t.find(".s-btn").each(function(){
 $(this).splitbutton("destroy");
 });
+t.find(".tooltip-f").tooltip("destroy");
 };
 function _23(_24){
 $(_24).find("div.panel:visible,div.accordion:visible,div.tabs-container:visible,div.layout:visible").each(function(){
@@ -498,6 +507,7 @@ return _6b[1];
 }else{
 return _69;
 }
+},onBeforeLoad:function(){
 },onLoad:function(){
 },onBeforeOpen:function(){
 },onOpen:function(){

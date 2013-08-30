@@ -4,7 +4,7 @@
  * Copyright (c) 2009-2013 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL or commercial licenses
- * To use it on other terms please contact us: jeasyui@gmail.com
+ * To use it on other terms please contact us: info@jeasyui.com
  * http://www.gnu.org/licenses/gpl.txt
  * http://www.jeasyui.com/license_commercial.php
  * 
@@ -36,8 +36,9 @@
 	 * set the slider size, for vertical slider, the height property is required
 	 */
 	function setSize(target, param){
-		var opts = $.data(target, 'slider').options;
-		var slider = $.data(target, 'slider').slider;
+		var state = $.data(target, 'slider');
+		var opts = state.options;
+		var slider = state.slider;
 		
 		if (param){
 			if (param.width) opts.width = param.width;
@@ -66,8 +67,9 @@
 	 * show slider rule if needed
 	 */
 	function showRule(target){
-		var opts = $.data(target, 'slider').options;
-		var slider = $.data(target, 'slider').slider;
+		var state = $.data(target, 'slider');
+		var opts = state.options;
+		var slider = state.slider;
 		
 		var aa = opts.mode == 'h' ? opts.rule : opts.rule.slice(0).reverse();
 		if (opts.reversed){
@@ -109,8 +111,9 @@
 	 * build the slider and set some properties
 	 */
 	function buildSlider(target){
-		var opts = $.data(target, 'slider').options;
-		var slider = $.data(target, 'slider').slider;
+		var state = $.data(target, 'slider');
+		var opts = state.options;
+		var slider = state.slider;
 		
 		slider.removeClass('slider-h slider-v slider-disabled');
 		slider.addClass(opts.mode == 'h' ? 'slider-h' : 'slider-v');
@@ -135,6 +138,9 @@
 					return false;
 				}
 			},
+			onBeforeDrag:function(){
+				state.isDragging = true;
+			},
 			onStartDrag:function(){
 				opts.onSlideStart.call(target, opts.value);
 			},
@@ -142,7 +148,16 @@
 				var value = pos2value(target, (opts.mode=='h'?e.data.left:e.data.top));
 				adjustValue(value);
 				opts.onSlideEnd.call(target, opts.value);
+				opts.onComplete.call(target, opts.value);
+				state.isDragging = false;
 			}
+		});
+		slider.find('div.slider-inner').unbind('.slider').bind('mousedown.slider', function(e){
+			if (state.isDragging){return}
+			var pos = $(this).offset();
+			var value = pos2value(target, (opts.mode=='h'?(e.pageX-pos.left):(e.pageY-pos.top)));
+			adjustValue(value);
+			opts.onComplete.call(target, opts.value);
 		});
 		
 		function adjustValue(value){
@@ -160,8 +175,9 @@
 	 * set a specified value to slider
 	 */
 	function setValue(target, value){
-		var opts = $.data(target, 'slider').options;
-		var slider = $.data(target, 'slider').slider;
+		var state = $.data(target, 'slider');
+		var opts = state.options;
+		var slider = state.slider;
 		var oldValue = opts.value;
 		if (value < opts.min) value = opts.min;
 		if (value > opts.max) value = opts.max;
@@ -206,8 +222,9 @@
 	 * translate value to slider position
 	 */
 	function value2pos(target, value){
-		var opts = $.data(target, 'slider').options;
-		var slider = $.data(target, 'slider').slider;
+		var state = $.data(target, 'slider');
+		var opts = state.options;
+		var slider = state.slider;
 		if (opts.mode == 'h'){
 			var pos = (value-opts.min)/(opts.max-opts.min)*slider.width();
 			if (opts.reversed){
@@ -226,8 +243,9 @@
 	 * translate slider position to value
 	 */
 	function pos2value(target, pos){
-		var opts = $.data(target, 'slider').options;
-		var slider = $.data(target, 'slider').slider;
+		var state = $.data(target, 'slider');
+		var opts = state.options;
+		var slider = state.slider;
 		if (opts.mode == 'h'){
 			var value = opts.min + (opts.max-opts.min)*(pos/slider.width());
 		} else {
@@ -253,6 +271,13 @@
 				});
 				$(this).removeAttr('disabled');
 			}
+			
+			var opts = state.options;
+			opts.min = parseFloat(opts.min);
+			opts.max = parseFloat(opts.max);
+			opts.value = parseFloat(opts.value);
+			opts.step = parseFloat(opts.step);
+			
 			buildSlider(this);
 			showRule(this);
 			setSize(this);
@@ -322,6 +347,7 @@
 		tipFormatter: function(value){return value},
 		onChange: function(value, oldValue){},
 		onSlideStart: function(value){},
-		onSlideEnd: function(value){}
+		onSlideEnd: function(value){},
+		onComplete: function(value){}
 	};
 })(jQuery);

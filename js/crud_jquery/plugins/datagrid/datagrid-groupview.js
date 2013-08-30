@@ -16,7 +16,7 @@ var groupview = $.extend({}, $.fn.datagrid.defaults.view, {
 			table.push('<tr>');
 			table.push('<td style="border:0;">');
 			if (!frozen){
-				table.push('<span style="color:#666;font-weight:bold;">');
+				table.push('<span>');
 				table.push(opts.groupFormatter.call(target, group.fvalue, group.rows));
 				table.push('</span>');
 			}
@@ -27,10 +27,22 @@ var groupview = $.extend({}, $.fn.datagrid.defaults.view, {
 			
 			table.push('<table class="datagrid-btable" cellspacing="0" cellpadding="0" border="0"><tbody>');
 			for(var j=0; j<group.rows.length; j++) {
-				// get the class and style attributes for this row
-				var cls = (index % 2 && opts.striped) ? 'class="datagrid-row datagrid-row-alt"' : 'class="datagrid-row"';
-				var styleValue = opts.rowStyler ? opts.rowStyler.call(target, index, group.rows[j]) : '';
+				var css = opts.rowStyler ? opts.rowStyler.call(target, index, group.rows[j]) : '';
+				var classValue = '';
+				var styleValue = '';
+				if (typeof css == 'string'){
+					styleValue = css;
+				} else if (css){
+					classValue = css['class'] || '';
+					styleValue = css['style'] || '';
+				}
+				
+				var cls = 'class="datagrid-row ' + (index % 2 && opts.striped ? 'datagrid-row-alt ' : ' ') + classValue + '"';
 				var style = styleValue ? 'style="' + styleValue + '"' : '';
+				// get the class and style attributes for this row
+//				var cls = (index % 2 && opts.striped) ? 'class="datagrid-row datagrid-row-alt"' : 'class="datagrid-row"';
+//				var styleValue = opts.rowStyler ? opts.rowStyler.call(target, index, group.rows[j]) : '';
+//				var style = styleValue ? 'style="' + styleValue + '"' : '';
 				var rowId = state.rowIdPrefix + '-' + (frozen?1:2) + '-' + index;
 				table.push('<tr id="' + rowId + '" datagrid-row-index="' + index + '" ' + cls + ' ' + style + '>');
 				table.push(this.renderRow.call(this, target, fields, frozen, index, group.rows[j]));

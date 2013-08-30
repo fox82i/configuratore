@@ -13,10 +13,18 @@ var detailview = $.extend({}, $.fn.datagrid.defaults.view, {
 		var table = [];
 		table.push('<table class="datagrid-btable" cellspacing="0" cellpadding="0" border="0"><tbody>');
 		for(var i=0; i<rows.length; i++) {
-			
 			// get the class and style attributes for this row
-			var cls = (i % 2 && opts.striped) ? 'class="datagrid-row datagrid-row-alt"' : 'class="datagrid-row"';
-			var styleValue = opts.rowStyler ? opts.rowStyler.call(target, i, rows[i]) : '';
+			var css = opts.rowStyler ? opts.rowStyler.call(target, i, rows[i]) : '';
+			var classValue = '';
+			var styleValue = '';
+			if (typeof css == 'string'){
+				styleValue = css;
+			} else if (css){
+				classValue = css['class'] || '';
+				styleValue = css['style'] || '';
+			}
+			
+			var cls = 'class="datagrid-row ' + (i % 2 && opts.striped ? 'datagrid-row-alt ' : ' ') + classValue + '"';
 			var style = styleValue ? 'style="' + styleValue + '"' : '';
 			var rowId = state.rowIdPrefix + '-' + (frozen?1:2) + '-' + i;
 			table.push('<tr id="' + rowId + '" datagrid-row-index="' + i + '" ' + cls + ' ' + style + '>');
@@ -61,19 +69,26 @@ var detailview = $.extend({}, $.fn.datagrid.defaults.view, {
 			var col = $(target).datagrid('getColumnOption', field);
 			if (col){
 				var value = rowData[field];	// the field value
-				// get the cell style attribute
-				var styleValue = col.styler ? (col.styler(value, rowData, rowIndex)||'') : '';
+				var css = col.styler ? (col.styler(value, rowData, rowIndex)||'') : '';
+				var classValue = '';
+				var styleValue = '';
+				if (typeof css == 'string'){
+					styleValue = css;
+				} else if (cc){
+					classValue = css['class'] || '';
+					styleValue = css['style'] || '';
+				}
+				var cls = classValue ? 'class="' + classValue + '"' : '';
 				var style = col.hidden ? 'style="display:none;' + styleValue + '"' : (styleValue ? 'style="' + styleValue + '"' : '');
 				
-				cc.push('<td field="' + field + '" ' + style + '>');
+				cc.push('<td field="' + field + '" ' + cls + ' ' + style + '>');
 				
 				if (col.checkbox){
-					var style = '';
+					style = '';
 				} else if (col.expander){
 					style = "text-align:center;height:16px;";
 				} else {
-					var style = styleValue;
-//					style += 'text-align:' + (col.align || 'left') + ';';
+					style = styleValue;
 					if (col.align){style += ';text-align:' + col.align + ';'}
 					if (!opts.nowrap){
 						style += ';white-space:normal;height:auto;';
@@ -91,7 +106,7 @@ var detailview = $.extend({}, $.fn.datagrid.defaults.view, {
 				cc.push('">');
 				
 				if (col.checkbox){
-					cc.push('<input type="checkbox" name="' + field + '" value="' + (value!=undefined ? value : '') + '"/>');
+					cc.push('<input type="checkbox" name="' + field + '" value="' + (value!=undefined ? value : '') + '">');
 				} else if (col.expander) {
 					//cc.push('<div style="text-align:center;width:16px;height:16px;">');
 					cc.push('<span class="datagrid-row-expander datagrid-row-expand" style="display:inline-block;width:16px;height:16px;cursor:pointer;" />');

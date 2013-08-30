@@ -4,7 +4,7 @@
  * Copyright (c) 2009-2013 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL or commercial licenses
- * To use it on other terms please contact us: jeasyui@gmail.com
+ * To use it on other terms please contact us: info@jeasyui.com
  * http://www.gnu.org/licenses/gpl.txt
  * http://www.jeasyui.com/license_commercial.php
  */
@@ -150,13 +150,12 @@
 		 * check the checkbox and radio fields
 		 */
 		function _checkField(name, val){
-			var form = $(target);
-			var rr = $('input[name="'+name+'"][type=radio], input[name="'+name+'"][type=checkbox]', form);
-			$.fn.prop ? rr.prop('checked',false) : rr.attr('checked',false);
+			var rr = $(target).find('input[name="'+name+'"][type=radio], input[name="'+name+'"][type=checkbox]');
+			rr._propAttr('checked', false);
 			rr.each(function(){
 				var f = $(this);
-				if (f.val() == String(val)){
-					$.fn.prop ? f.prop('checked',true) : f.attr('checked',true);
+				if (f.val() == String(val) || $.inArray(f.val(), val) >= 0){
+					f._propAttr('checked', true);
 				}
 			});
 			return rr;
@@ -215,6 +214,8 @@
 		if ($.fn.combobox){t.find('.combobox-f').combobox('reset');}
 		if ($.fn.combotree){t.find('.combotree-f').combotree('reset');}
 		if ($.fn.combogrid){t.find('.combogrid-f').combogrid('reset');}
+		if ($.fn.datebox){t.find('.datebox-f').datebox('reset');}
+		if ($.fn.datetimebox){t.find('.datetimebox-f').datetimebox('reset');}
 		if ($.fn.spinner){t.find('.spinner-f').spinner('reset');}
 		if ($.fn.timespinner){t.find('.timespinner-f').timespinner('reset');}
 		if ($.fn.numberbox){t.find('.numberbox-f').numberbox('reset');}
@@ -260,6 +261,10 @@
 		return true;
 	}
 	
+	function setValidation(target, novalidate){
+		$(target).find('.validatebox-text:not(:disabled)').validatebox(novalidate ? 'disableValidation' : 'enableValidation');
+	}
+	
 	$.fn.form = function(options, param){
 		if (typeof options == 'string'){
 			return $.fn.form.methods[options](this, param);
@@ -299,6 +304,16 @@
 		},
 		validate: function(jq){
 			return validate(jq[0]);
+		},
+		disableValidation: function(jq){
+			return jq.each(function(){
+				setValidation(this, true);
+			});
+		},
+		enableValidation: function(jq){
+			return jq.each(function(){
+				setValidation(this, false);
+			});
 		}
 	};
 	

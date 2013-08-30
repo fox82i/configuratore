@@ -4,7 +4,7 @@
  * Copyright (c) 2009-2013 www.jeasyui.com. All rights reserved.
  *
  * Licensed under the GPL or commercial licenses
- * To use it on other terms please contact us: jeasyui@gmail.com
+ * To use it on other terms please contact us: info@jeasyui.com
  * http://www.gnu.org/licenses/gpl.txt
  * http://www.jeasyui.com/license_commercial.php
  * 
@@ -13,6 +13,14 @@
  * 
  */
 (function($){
+	function findDataItem(data,key,value){
+		for(var i=0; i<data.length; i++){
+			var item = data[i];
+			if (item[key] == value){return item}
+		}
+		return null;
+	}
+	
 	/**
 	 * scroll panel to display the specified item
 	 */
@@ -30,46 +38,36 @@
 		}
 	}
 	
-	/**
-	 * select previous item
-	 */
-	function selectPrev(target){
-		var panel = $(target).combo('panel');
-		var values = $(target).combo('getValues');
-		var item = panel.find('div.combobox-item[value="' + values.pop() + '"]');
-		if (item.length){
-			var prev = item.prev(':visible');
-			if (prev.length){
-				item = prev;
-			}
-		} else {
-			item = panel.find('div.combobox-item:visible:last');
+	function nav(target, dir){
+		var opts = $(target).combobox('options');
+		var panel = $(target).combobox('panel');
+		var item = panel.children('div.combobox-item-hover');
+		if (!item.length){
+			item = panel.children('div.combobox-item-selected');
 		}
-		var value = item.attr('value');
-		select(target, value);
-//		setValues(target, [value]);
-		scrollTo(target, value);
-	}
-	
-	/**
-	 * select next item
-	 */
-	function selectNext(target){
-		var panel = $(target).combo('panel');
-		var values = $(target).combo('getValues');
-		var item = panel.find('div.combobox-item[value="' + values.pop() + '"]');
-		if (item.length){
-			var next = item.next(':visible');
-			if (next.length){
-				item = next;
-			}
+		item.removeClass('combobox-item-hover');
+		if (!item.length){
+			item = panel.children('div.combobox-item:visible:' + (dir=='next'?'first':'last'));
 		} else {
-			item = panel.find('div.combobox-item:visible:first');
+			if (dir == 'next'){
+				item = item.nextAll('div.combobox-item:visible:first');
+				if (!item.length){
+					item = panel.children('div.combobox-item:visible:first');
+				}
+			} else {
+				item = item.prevAll('div.combobox-item:visible:first');
+				if (!item.length){
+					item = panel.children('div.combobox-item:visible:last');
+				}
+			}
 		}
-		var value = item.attr('value');
-		select(target, value);
-//		setValues(target, [value]);
-		scrollTo(target, value);
+		if (item.length){
+			item.addClass('combobox-item-hover');
+			scrollTo(target, item.attr('value'));
+			if (opts.selectOnNavigation){
+				select(target, item.attr('value'));
+			}
+		}
 	}
 	
 	/**
@@ -90,11 +88,9 @@
 			setValues(target, [value]);
 		}
 		
-		for(var i=0; i<data.length; i++){
-			if (data[i][opts.valueField] == value){
-				opts.onSelect.call(target, data[i]);
-				return;
-			}
+		var item = findDataItem(data, opts.valueField, value);
+		if (item){
+			opts.onSelect.call(target, item);
 		}
 	}
 	
@@ -102,21 +98,18 @@
 	 * unselect the specified value
 	 */
 	function unselect(target, value){
-		var opts = $.data(target, 'combobox').options;
-		var data = $.data(target, 'combobox').data;
+		var state = $.data(target, 'combobox');
+		var opts = state.options;
 		var values = $(target).combo('getValues');
-		for(var i=0; i<values.length; i++){
-			if (values[i] == value){
-				values.splice(i, 1);
-				setValues(target, values);
-				break;
-			}
+//		var index = values.indexOf(value+'');
+		var index = $.inArray(value+'', values);
+		if (index >= 0){
+			values.splice(index, 1);
+			setValues(target, values);
 		}
-		for(var i=0; i<data.length; i++){
-			if (data[i][opts.valueField] == value){
-				opts.onUnselect.call(target, data[i]);
-				return;
-			}
+		var item = findDataItem(state.data, opts.valueField, value);
+		if (item){
+			opts.onUnselect.call(target, item);
 		}
 	}
 	
@@ -133,11 +126,9 @@
 		for(var i=0; i<values.length; i++){
 			var v = values[i];
 			var s = v;
-			for(var j=0; j<data.length; j++){
-				if (data[j][opts.valueField] == v){
-					s = data[j][opts.textField];
-					break;
-				}
+			var item = findDataItem(data, opts.valueField, v);
+			if (item){
+				s = item[opts.textField];
 			}
 			vv.push(v);
 			ss.push(s);
@@ -150,41 +141,40 @@
 		}
 	}
 	
-	function transformData(target){
-		var opts = $.data(target, 'combobox').options;
-		var data = [];
-		$('>option', target).each(function(){
-			var item = {};
-			item[opts.valueField] = $(this).attr('value')!=undefined ? $(this).attr('value') : $(this).html();
-			item[opts.textField] = $(this).html();
-			item['selected'] = $(this).attr('selected');
-			data.push(item);
-		});
-		return data;
-	}
-	
 	/**
 	 * load data, the old list items will be removed.
 	 */
 	function loadData(target, data, remainText){
-		var opts = $.data(target, 'combobox').options;
-		var panel = $(target).combo('panel');
-		
-		$.data(target, 'combobox').data = data;
+		var state = $.data(target, 'combobox');
+		var opts = state.options;
+		state.data = opts.loadFilter.call(target, data);
+		data = state.data;
 		
 		var selected = $(target).combobox('getValues');
-		panel.empty();	// clear old data
+		var dd = [];
+		var group = undefined;
 		for(var i=0; i<data.length; i++){
-			var v = data[i][opts.valueField];
-			var s = data[i][opts.textField];
-			var item = $('<div class="combobox-item"></div>').appendTo(panel);
-			item.attr('value', v);
-			if (opts.formatter){
-				item.html(opts.formatter.call(target, data[i]));
+			var item = data[i];
+			var v = item[opts.valueField];
+			var s = item[opts.textField];
+			var g = item[opts.groupField];
+			
+			if (g){
+				if (group != g){
+					group = g;
+					dd.push('<div class="combobox-group" value="' + g + '">');
+					dd.push(opts.groupFormatter ? opts.groupFormatter.call(target, g) : g);
+					dd.push('</div>');
+				}
 			} else {
-				item.html(s);
+				group = undefined;
 			}
-			if (data[i]['selected']){
+			
+			dd.push('<div class="combobox-item' + (g ? ' combobox-gitem' : '') + '" value="' + v + '"' + (g ? ' group="' + g + '"' : '') + '>');
+			dd.push(opts.formatter ? opts.formatter.call(target, item) : s);
+			dd.push('</div>');
+			
+			if (item['selected']){
 				(function(){
 					for(var i=0; i<selected.length; i++){
 						if (v == selected[i]) return;
@@ -193,6 +183,8 @@
 				})();
 			}
 		}
+		$(target).combo('panel').html(dd.join(''));
+		
 		if (opts.multiple){
 			setValues(target, selected, remainText);
 		} else {
@@ -204,23 +196,6 @@
 		}
 		
 		opts.onLoadSuccess.call(target, data);
-		
-		$('.combobox-item', panel).hover(
-			function(){$(this).addClass('combobox-item-hover');},
-			function(){$(this).removeClass('combobox-item-hover');}
-		).click(function(){
-			var item = $(this);
-			if (opts.multiple){
-				if (item.hasClass('combobox-item-selected')){
-					unselect(target, item.attr('value'));
-				} else {
-					select(target, item.attr('value'));
-				}
-			} else {
-				select(target, item.attr('value'));
-				$(target).combo('hidePanel');
-			}
-		});
 	}
 	
 	/**
@@ -247,7 +222,8 @@
 	 * do the query action
 	 */
 	function doQuery(target, q){
-		var opts = $.data(target, 'combobox').options;
+		var state = $.data(target, 'combobox');
+		var opts = state.options;
 		
 		if (opts.multiple && !q){
 			setValues(target, [], true);
@@ -259,21 +235,58 @@
 			request(target, null, {q:q}, true);
 		} else {
 			var panel = $(target).combo('panel');
-			panel.find('div.combobox-item').hide();
-			var data = $.data(target, 'combobox').data;
+			panel.find('div.combobox-item,div.combobox-group').hide();
+			var data = state.data;
+			var group = undefined;
 			for(var i=0; i<data.length; i++){
-				if (opts.filter.call(target, q, data[i])){
-					var v = data[i][opts.valueField];
-					var s = data[i][opts.textField];
+				var item = data[i];
+				if (opts.filter.call(target, q, item)){
+					var v = item[opts.valueField];
+					var s = item[opts.textField];
+					var g = item[opts.groupField];
 					var item = panel.find('div.combobox-item[value="' + v + '"]');
 					item.show();
 					if (s == q){
 						setValues(target, [v], true);
 						item.addClass('combobox-item-selected');
 					}
+					if (opts.groupField && group != g){
+						panel.find('div.combobox-group[value="' + g + '"]').show();
+						group = g;
+					}
 				}
 			}
 		}
+	}
+	
+	function doEnter(target){
+		var t = $(target);
+		var panel = t.combobox('panel');
+		var opts = t.combobox('options');
+		var data = t.combobox('getData');
+		var item = panel.children('div.combobox-item-hover');
+		if (!item.length){
+			item = panel.children('div.combobox-item-selected');
+		}
+		if (!item.length){return}
+		if (opts.multiple){
+			if (item.hasClass('combobox-item-selected')){
+				t.combobox('unselect', item.attr('value'));
+			} else {
+				t.combobox('select', item.attr('value'));
+			}
+		} else {
+			t.combobox('select', item.attr('value'));
+			t.combobox('hidePanel');
+		}
+		var vv = [];
+		var values = t.combobox('getValues');
+		for(var i=0; i<values.length; i++){
+			if (findDataItem(data, opts.valueField, values[i])){
+				vv.push(values[i]);
+			}
+		}
+		t.combobox('setValues', vv);
 	}
 	
 	/**
@@ -289,6 +302,30 @@
 				opts.onShowPanel.call(target);
 			}
 		}));
+		
+		$(target).combo('panel').unbind().bind('mouseover', function(e){
+			$(this).children('div.combobox-item-hover').removeClass('combobox-item-hover');
+			$(e.target).closest('div.combobox-item').addClass('combobox-item-hover');
+			e.stopPropagation();
+		}).bind('mouseout', function(e){
+			$(e.target).closest('div.combobox-item').removeClass('combobox-item-hover');
+			e.stopPropagation();
+		}).bind('click', function(e){
+			var item = $(e.target).closest('div.combobox-item');
+			if (!item.length){return}
+			var value = item.attr('value');
+			if (opts.multiple){
+				if (item.hasClass('combobox-item-selected')){
+					unselect(target, value);
+				} else {
+					select(target, value);
+				}
+			} else {
+				select(target, value);
+				$(target).combo('hidePanel');
+			}
+			e.stopPropagation();
+		});
 	}
 	
 	$.fn.combobox = function(options, param){
@@ -309,10 +346,14 @@
 				create(this);
 			} else {
 				state = $.data(this, 'combobox', {
-					options: $.extend({}, $.fn.combobox.defaults, $.fn.combobox.parseOptions(this), options)
+					options: $.extend({}, $.fn.combobox.defaults, $.fn.combobox.parseOptions(this), options),
+					data: []
 				});
 				create(this);
-				loadData(this, transformData(this));
+				var data = $.fn.combobox.parseData(this);
+				if (data.length){
+					loadData(this, data);
+				}
 			}
 			if (state.options.data){
 				loadData(this, state.options.data);
@@ -324,9 +365,12 @@
 	
 	$.fn.combobox.methods = {
 		options: function(jq){
-			var opts = $.data(jq[0], 'combobox').options;
-			opts.originalValue = jq.combo('options').originalValue;
-			return opts;
+			var copts = jq.combo('options');
+			return $.extend($.data(jq[0], 'combobox').options, {
+				originalValue: copts.originalValue,
+				disabled: copts.disabled,
+				readonly: copts.readonly
+			});
 		},
 		getData: function(jq){
 			return $.data(jq[0], 'combobox').data;
@@ -383,27 +427,54 @@
 	$.fn.combobox.parseOptions = function(target){
 		var t = $(target);
 		return $.extend({}, $.fn.combo.parseOptions(target), $.parser.parseOptions(target,[
-			'valueField','textField','mode','method','url'
+			'valueField','textField','groupField','mode','method','url'
 		]));
+	};
+	
+	$.fn.combobox.parseData = function(target){
+		var data = [];
+		var opts = $(target).combobox('options');
+		$(target).children().each(function(){
+			if (this.tagName.toLowerCase() == 'optgroup'){
+				var group = $(this).attr('label');
+				$(this).children().each(function(){
+					_parseItem(this, group);
+				});
+			} else {
+				_parseItem(this);
+			}
+		});
+		return data;
+		
+		function _parseItem(el, group){
+			var t = $(el);
+			var item = {};
+			item[opts.valueField] = t.attr('value')!=undefined ? t.attr('value') : t.html();
+			item[opts.textField] = t.html();
+			item['selected'] = t.is(':selected');
+			if (group){
+				opts.groupField = opts.groupField || 'group';
+				item[opts.groupField] = group;
+			}
+			data.push(item);
+		}
 	};
 	
 	$.fn.combobox.defaults = $.extend({}, $.fn.combo.defaults, {
 		valueField: 'value',
 		textField: 'text',
+		groupField: null,
+		groupFormatter: function(group){return group;},
 		mode: 'local',	// or 'remote'
 		method: 'post',
 		url: null,
 		data: null,
 		
 		keyHandler: {
-			up: function(){selectPrev(this);},
-			down: function(){selectNext(this);},
-			enter: function(){
-				var values = $(this).combobox('getValues');
-				$(this).combobox('setValues', values);
-				$(this).combobox('hidePanel');
-			},
-			query: function(q){doQuery(this, q);}
+			up: function(){nav(this,'prev')},
+			down: function(){nav(this,'next')},
+			enter: function(){doEnter(this)},
+			query: function(q){doQuery(this, q)}
 		},
 		filter: function(q, row){
 			var opts = $(this).combobox('options');
@@ -428,6 +499,9 @@
 					error.apply(this, arguments);
 				}
 			});
+		},
+		loadFilter: function(data){
+			return data;
 		},
 		
 		onBeforeLoad: function(param){},

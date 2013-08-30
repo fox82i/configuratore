@@ -5,13 +5,20 @@
 	date_default_timezone_set('Europe/Rome');
 	
 	#decodifico il vettore JSON
-	$dati= json_decode($_REQUEST['dati_excel']);
+	$dati= json_decode($_REQUEST['dati_excel'],true);
+	//$dati= $_REQUEST['dati_excel'];
 	
 	//$dati_prodotto = preg_split("/\|/",$dati);
-	//	print_r($dati);
-	
-	
-	
+	//print_r($dati);
+	//var_dump($dati);
+	//echo "<br/>".$dati['total']."<br/>";
+	/*for($i=0;$i<=$dati['total'];$i++){
+	echo "<strong>RIGA</strong> :".$i."<br/>";
+	foreach ($dati['rows'][$i] as $key => $val){
+		
+		echo $val."<br>";
+	}}
+	*/
 	// Create new PHPExcel object
 	$objPHPExcel = new PHPExcel();
 
@@ -23,6 +30,7 @@
 	//intestazioni di colonna: Non sapendo quante colonne vengono passate generalizzo l'estrazione delle intestazioni
 	foreach ($dati[0] as $key => $val){
 		$objWorksheet->setCellValue($col.$riga,$key);
+		#echo $col.$iga."-".$key."\t";
 		$col++;
 	}
 	# MI POSIZIONO SULLA SECONDA RIGA
@@ -31,13 +39,14 @@
 		$col='A';
 		foreach ($valore as $key => $val){
 			$objWorksheet->setCellValue($col.$riga, $val);
+			#echo $col.$iga."-".$val."\t";
 			$col++;
 		}
 		$riga++;
 		
 	}
 	
-	
+
 	// Set document properties
 	$objPHPExcel->getProperties()->setCreator("Alessandro Fornasier")
 							 ->setLastModifiedBy("Alessandro Fornasier")
@@ -62,6 +71,6 @@
 
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 	$objWriter->save('php://output');
-	
-	
+
+
 ?>

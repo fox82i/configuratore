@@ -2,12 +2,12 @@
 include("include/dbconfig.inc.php");
 			include ("Template/head2.php");
 			echo "
-			<link rel=\"stylesheet\" type=\"text/css\" href=\"js/crud_jquery/themes/default/easyui.css\">  
+			<link rel=\"stylesheet\" type=\"text/css\" href=\"js/crud_jquery/themes/metro/easyui.css\">  
           	<link rel=\"stylesheet\" type=\"text/css\" href=\"js/crud_jquery/themes/icon.css\">  
-            <link rel=\"stylesheet\" type=\"text/css\" href=\"js/crud_jquery/demo/demo.css\">  
-            <script type=\"text/javascript\" src=\"js/crud_jquery/jquery-1.8.0.min.js\"></script>  
+            <link rel=\"stylesheet\" type=\"text/css\" href=\"js/crud_jquery/metro/easyui.css\">  
+            <script type=\"text/javascript\" src=\"js/crud_jquery/jquery-1.10.1.js\"></script>  
             <script type=\"text/javascript\" src=\"js/crud_jquery/jquery.easyui.min.js\"></script>           
-			<script type=\"text/javascript\" src=\"js/crud_jquery/plugins/datagrid/datagrid-detailview.js\"></script>
+			<!--<script type=\"text/javascript\" src=\"js/crud_jquery/plugins/datagrid/datagrid-detailview.js\"></script>-->
 			
 			<script type=\"text/javascript\" language=\"javascript\">
 			
@@ -132,20 +132,18 @@ include("include/dbconfig.inc.php");
 				var dati_excel= new Array();
 				var rows = $('#dg').datagrid('getSelections'); 
 				
+				
 				if (rows.length>0){
-					//codifico l'array associativo in un JSON vettore... lato PHP devo fare la decodifica
-					dati_excel= JSON.stringify(getParameters(rows));
+						
 					//javascript:window.location='controller/esporta_dati_selezionati_excel.php?dati_excel='+JSON.stringify(getParameters(rows));
-					
 					//window.location con metodo POST
+					//codifico l'array associativo in un JSON vettore... lato PHP devo fare la decodifica
 					post('controller/esporta_dati_selezionati_excel.php',JSON.stringify(getParameters(rows)));
-					
-					//for (i in dati_excel){
-					//for (j in dati_excel[i]){
-						//console.log(j+ '=' + dati_excel[i][j]);
-					//}}
 				}else{
-					alert('Nessuna riga selezionata');
+					
+					var rows = $('#dg').datagrid('getData'); 
+					alert(JSON.stringify(rows));
+					post('controller/esporta_dati_selezionati_excel.php',JSON.stringify(rows));
 				}
 				
 			}

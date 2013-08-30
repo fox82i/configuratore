@@ -69,10 +69,21 @@ var scrollview2 = $.extend({}, $.fn.datagrid.defaults.view, {
 		var index = this.index;
 		var table = ['<table class="datagrid-btable" cellspacing="0" cellpadding="0" border="0"><tbody>'];
 		for(var i=0; i<rows.length; i++) {
-			// get the class and style attributes for this row
-			var cls = (index % 2 && opts.striped) ? 'class="datagrid-row datagrid-row-alt"' : 'class="datagrid-row"';
-			var styleValue = opts.rowStyler ? opts.rowStyler.call(target, index, rows[i]) : '';
+			var css = opts.rowStyler ? opts.rowStyler.call(target, index, rows[i]) : '';
+			var classValue = '';
+			var styleValue = '';
+			if (typeof css == 'string'){
+				styleValue = css;
+			} else if (css){
+				classValue = css['class'] || '';
+				styleValue = css['style'] || '';
+			}
+			var cls = 'class="datagrid-row ' + (index % 2 && opts.striped ? 'datagrid-row-alt ' : ' ') + classValue + '"';
 			var style = styleValue ? 'style="' + styleValue + '"' : '';
+			// get the class and style attributes for this row
+//			var cls = (index % 2 && opts.striped) ? 'class="datagrid-row datagrid-row-alt"' : 'class="datagrid-row"';
+//			var styleValue = opts.rowStyler ? opts.rowStyler.call(target, index, rows[i]) : '';
+//			var style = styleValue ? 'style="' + styleValue + '"' : '';
 			var rowId = state.rowIdPrefix + '-' + (frozen?1:2) + '-' + index;
 			table.push('<tr id="' + rowId + '" datagrid-row-index="' + index + '" ' + cls + ' ' + style + '>');
 			table.push(this.renderRow.call(this, target, fields, frozen, index, rows[i]));

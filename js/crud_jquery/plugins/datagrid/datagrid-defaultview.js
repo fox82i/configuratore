@@ -14,8 +14,17 @@ var defaultView = {
 		var table = ['<table class="datagrid-btable" cellspacing="0" cellpadding="0" border="0"><tbody>'];
 		for(var i=0; i<rows.length; i++) {
 			// get the class and style attributes for this row
-			var cls = (i % 2 && opts.striped) ? 'class="datagrid-row datagrid-row-alt"' : 'class="datagrid-row"';
-			var styleValue = opts.rowStyler ? opts.rowStyler.call(target, i, rows[i]) : '';
+			var css = opts.rowStyler ? opts.rowStyler.call(target, i, rows[i]) : '';
+			var classValue = '';
+			var styleValue = '';
+			if (typeof css == 'string'){
+				styleValue = css;
+			} else if (css){
+				classValue = css['class'] || '';
+				styleValue = css['style'] || '';
+			}
+			
+			var cls = 'class="datagrid-row ' + (i % 2 && opts.striped ? 'datagrid-row-alt ' : ' ') + classValue + '"';
 			var style = styleValue ? 'style="' + styleValue + '"' : '';
 			var rowId = state.rowIdPrefix + '-' + (frozen?1:2) + '-' + i;
 			table.push('<tr id="' + rowId + '" datagrid-row-index="' + i + '" ' + cls + ' ' + style + '>');
@@ -59,35 +68,38 @@ var defaultView = {
 			var col = $(target).datagrid('getColumnOption', field);
 			if (col){
 				var value = rowData[field];	// the field value
-				// get the cell style attribute
-				var styleValue = col.styler ? (col.styler(value, rowData, rowIndex)||'') : '';
+				var css = col.styler ? (col.styler(value, rowData, rowIndex)||'') : '';
+				var classValue = '';
+				var styleValue = '';
+				if (typeof css == 'string'){
+					styleValue = css;
+				} else if (cc){
+					classValue = css['class'] || '';
+					styleValue = css['style'] || '';
+				}
+				var cls = classValue ? 'class="' + classValue + '"' : '';
 				var style = col.hidden ? 'style="display:none;' + styleValue + '"' : (styleValue ? 'style="' + styleValue + '"' : '');
 				
-				cc.push('<td field="' + field + '" ' + style + '>');
+				cc.push('<td field="' + field + '" ' + cls + ' ' + style + '>');
 				
 				if (col.checkbox){
 					var style = '';
 				} else {
-					var style = '';
-//						style += 'text-align:' + (col.align || 'left') + ';';
-					if (col.align){style += 'text-align:' + col.align + ';'}
+					var style = styleValue;
+					if (col.align){style += ';text-align:' + col.align + ';'}
 					if (!opts.nowrap){
-						style += 'white-space:normal;height:auto;';
+						style += ';white-space:normal;height:auto;';
 					} else if (opts.autoRowHeight){
-						style += 'height:auto;';
+						style += ';height:auto;';
 					}
 				}
 				
 				cc.push('<div style="' + style + '" ');
-				if (col.checkbox){
-					cc.push('class="datagrid-cell-check ');
-				} else {
-					cc.push('class="datagrid-cell ' + col.cellClass);
-				}
-				cc.push('">');
+				cc.push(col.checkbox ? 'class="datagrid-cell-check"' : 'class="datagrid-cell ' + col.cellClass + '"');
+				cc.push('>');
 				
 				if (col.checkbox){
-					cc.push('<input type="checkbox" name="' + field + '" value="' + (value!=undefined ? value : '') + '"/>');
+					cc.push('<input type="checkbox" name="' + field + '" value="' + (value!=undefined ? value : '') + '">');
 				} else if (col.formatter){
 					cc.push(col.formatter(value, rowData, rowIndex));
 				} else {
@@ -109,14 +121,23 @@ var defaultView = {
 		var opts = $.data(target, 'datagrid').options;
 		var rows = $(target).datagrid('getRows');
 		$.extend(rows[rowIndex], row);
-		var styleValue = opts.rowStyler ? opts.rowStyler.call(target, rowIndex, rows[rowIndex]) : '';
+		var css = opts.rowStyler ? opts.rowStyler.call(target, rowIndex, rows[rowIndex]) : '';
+		var classValue = '';
+		var styleValue = '';
+		if (typeof css == 'string'){
+			styleValue = css;
+		} else if (css){
+			classValue = css['class'] || '';
+			styleValue = css['style'] || '';
+		}
+		var classValue = 'datagrid-row ' + (rowIndex % 2 && opts.striped ? 'datagrid-row-alt ' : ' ') + classValue;
 		
 		function _update(frozen){
 			var fields = $(target).datagrid('getColumnFields', frozen);
 			var tr = opts.finder.getTr(target, rowIndex, 'body', (frozen?1:2));
 			var checked = tr.find('div.datagrid-cell-check input[type=checkbox]').is(':checked');
 			tr.html(this.renderRow.call(this, target, fields, frozen, rowIndex, rows[rowIndex]));
-			tr.attr('style', styleValue || '');
+			tr.attr('style', styleValue).attr('class', classValue);
 			if (checked){
 				tr.find('div.datagrid-cell-check input[type=checkbox]')._propAttr('checked', true);
 			}
@@ -143,7 +164,14 @@ var defaultView = {
 				tr.attr('datagrid-row-index', i+1);
 				tr.attr('id', state.rowIdPrefix + '-' + serno + '-' + (i+1));
 				if (frozen && opts.rownumbers){
-					tr.find('div.datagrid-cell-rownumber').html(i+2);
+					var rownumber = i+2;
+					if (opts.pagination){
+						rownumber += (opts.pageNumber-1)*opts.pageSize;
+					}
+					tr.find('div.datagrid-cell-rownumber').html(rownumber);
+				}
+				if (opts.striped){
+					tr.removeClass('datagrid-row-alt').addClass((i+1)%2 ? 'datagrid-row-alt' : '');
 				}
 			}
 		}
@@ -189,7 +217,14 @@ var defaultView = {
 				tr.attr('datagrid-row-index', i-1);
 				tr.attr('id', state.rowIdPrefix + '-' + serno + '-' + (i-1));
 				if (frozen && opts.rownumbers){
-					tr.find('div.datagrid-cell-rownumber').html(i);
+					var rownumber = i;
+					if (opts.pagination){
+						rownumber += (opts.pageNumber-1)*opts.pageSize;
+					}
+					tr.find('div.datagrid-cell-rownumber').html(rownumber);
+				}
+				if (opts.striped){
+					tr.removeClass('datagrid-row-alt').addClass((i-1)%2 ? 'datagrid-row-alt' : '');
 				}
 			}
 		}
