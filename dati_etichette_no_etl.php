@@ -4,7 +4,7 @@ include("include/dbconfig.inc.php");
 			echo "
 			<link rel=\"stylesheet\" type=\"text/css\" href=\"js/crud_jquery/themes/metro/easyui.css\">  
           	<link rel=\"stylesheet\" type=\"text/css\" href=\"js/crud_jquery/themes/icon.css\">  
-            <link rel=\"stylesheet\" type=\"text/css\" href=\"js/crud_jquery/metro/easyui.css\">  
+            
             <script type=\"text/javascript\" src=\"js/crud_jquery/jquery-1.10.1.js\"></script>  
             <script type=\"text/javascript\" src=\"js/crud_jquery/jquery.easyui.min.js\"></script>           
 			<!--<script type=\"text/javascript\" src=\"js/crud_jquery/plugins/datagrid/datagrid-detailview.js\"></script>-->
