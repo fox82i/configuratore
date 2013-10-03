@@ -129,7 +129,7 @@
 												</label>
 												
 												<label><strong>Riferimento ordine cliente:</strong><br /><br />												
-													<textarea name="riferimento_ordine_cliente" id="riferimento_ordine_cliente" type="text" cols="10"  maxlength="255" size="3" tabindex="120"></textarea>
+													<textarea name="riferimento_ordine_cliente" id="riferimento_ordine_cliente" type="text" cols="10"  maxlength="255" size="3" tabindex="120">RIPORTARE SU IMBALLO RIF. NUM. :</textarea>
 												</label>
 												
 												<label><strong>Data inserimento ordine:</strong><br />

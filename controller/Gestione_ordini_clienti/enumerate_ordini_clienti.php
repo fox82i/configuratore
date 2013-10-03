@@ -32,6 +32,7 @@
 								numero_ordine_cliente,
 								riga_ordine_cliente,
 								codice_PF_finale,
+								quantita,
 								descrizione_pf_breve
 						FROM 	richieste_ordini_produzione
 						WHERE 	".$where_ricerca."

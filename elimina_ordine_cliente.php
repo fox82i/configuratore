@@ -96,7 +96,8 @@
 												<th field="data_inserimento" width="100" sortable="true" resizable="false" >Data inserimento ordine</th>  
 												<th field="numero_ordine_cliente" width="100" sortable="true" >Ordine cliente</th>
 												<th field="riga_ordine_cliente" width="80" align="center" sortable="true">Riga ordine</th>
-												<th field="codice_PF_finale" width="100" sortable="true" resizable="false" >Codice articolo</th>  
+												<th field="codice_PF_finale" align="center" sortable="true" resizable="false" >Codice articolo</th>  
+												<th field="quantita" align="center" resizable="false" >Quantita richiesta </th>  
 												<th field="descrizione_pf_breve" width="350" >Descrizione breve articolo</th>  														
 											</tr>  
 										</thead>  
