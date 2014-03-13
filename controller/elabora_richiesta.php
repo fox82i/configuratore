@@ -168,6 +168,8 @@
 						AND regole_sistema_fissaggio.nome_prodotto='".$nome_prodotto."'
 						AND regole_sistema_fissaggio.tipo_fissaggio=tipo_fissaggio.codice_fissaggio
 						AND regole_sistema_fissaggio.tipo_fissaggio='".$sistema_fissaggio."'
+						AND anagrafica_barre_led.blocco='0'
+						GROUP BY tipo_fissaggio.codice_fissaggio
 						ORDER BY CAST(anagrafica_barre_led.lunghezza_barra as SIGNED) DESC;" ;
 					$controllo_fissaggio=1;	
 			}else{
@@ -192,6 +194,7 @@
 						AND prodotto_lineare_schermo.prodotto_lineare='".$nome_prodotto."'
 						AND prodotto_lineare_schermo.codice_schermo='".$colore_schermo."'
 						AND prodotto_lineare_schermo.codice_schermo=schermo.codice_schermo
+						AND anagrafica_barre_led.blocco='0'
 						ORDER BY CAST(anagrafica_barre_led.lunghezza_barra as SIGNED) DESC;" ;
 			}
 		}else{
@@ -221,6 +224,7 @@
 						AND regole_sistema_fissaggio.nome_prodotto='".$nome_prodotto."'
 						AND regole_sistema_fissaggio.tipo_fissaggio=tipo_fissaggio.codice_fissaggio
 						AND regole_sistema_fissaggio.tipo_fissaggio='".$sistema_fissaggio."'
+						AND anagrafica_barre_led.blocco='0'
 						ORDER BY CAST(anagrafica_barre_led.lunghezza_barra as SIGNED) DESC;" ;
 				$controllo_fissaggio=1;	
 			}else{
@@ -245,6 +249,7 @@
 						AND prodotto_lineare_schermo.prodotto_lineare='".$nome_prodotto."'
 						AND prodotto_lineare_schermo.codice_schermo='".$colore_schermo."'
 						AND prodotto_lineare_schermo.codice_schermo=schermo.codice_schermo
+						AND anagrafica_barre_led.blocco='0'
 						ORDER BY CAST(anagrafica_barre_led.lunghezza_barra as SIGNED) DESC;" ;
 			}
 		}
@@ -311,6 +316,50 @@
 								//ATTENZIONE: La 'potenza a modulo' per queste reel è di 0,24. Dato taroccato in anagrafica per questioni commerciali, vedi Biancotto-Falcier-Codutti. Basta modificare valore in anagrafica per ritornare allo stato inziale
 								$numero_barre=floor($area_utile/25)*25;
 								$calcolo_led=floor($area_utile/25);
+								$num_led=($calcolo_led*$row['numero_led']);
+								$potenza=Round(((int)$calcolo_led* $row['potenza_a_modulo']),1);
+							
+							//	$parte_decimale=(($area_utile/25)- floor($area_utile/25));
+								echo "<p>Codice articolo prodotto configurato: ".return_temporary_code_MICHELON($ordine_cliente,$riga_ordine_cliente)."</p>";
+								
+								echo "<p><strong>IL PRODOTTO &Egrave; FATTIBILE</strong></p>
+										<strong>I dati tecnici del prodotto sono riferiti per 1 prodotto: </strong><br/>
+										CODICE PRODOTTO: ".$codice_PF." <br />
+										Potenza: ".$potenza."W <br />
+										Tensione: ".$row['tensione_alimentazione']."V <br />
+										Numero led: ".$num_led." <br />
+										Lunghezza REEL: ".$numero_barre."mm <br />
+										Descrittivo breve: ".$nome_prodotto." ".$motore_led." ".$descrizione_breve_accessorio." ".$codice_fissaggio." ".$lunghezza." ".$row['codifica_temperatura']." ".$potenza."W ".$row['tensione_alimentazione']."V ".$colore_schermo." <br />
+										Descrittivo lungo: ".$nome_prodotto." ".$motore_led." ".$descrizione_lunga_accessorio." ".$descrizione_fissaggio." ".$lunghezza."mm ".$row['tipo_luce']." ".$potenza."W ".$row['tensione_alimentazione']."VDC SCHERMO ".$row['descrizione_schermo']."<br />
+										Riferimento: ".$riferimento_ordine_cliente." <br />
+										";
+							
+							//	$area_utile=$parte_decimale*25;
+							//}
+							$descrittivo_pf=$nome_prodotto." ".$motore_led." ".$descrizione_lunga_accessorio." ".$descrizione_fissaggio." ".$lunghezza."mm ".$row['tipo_luce']." ".$potenza."W ".$row['tensione_alimentazione']."VDC SCHERMO ".$row['descrizione_schermo'];
+							$descrittivo_pf_breve=$nome_prodotto." ".$motore_led." ".$descrizione_breve_accessorio." ".$codice_fissaggio." ".$lunghezza." ".$row['codifica_temperatura']." ".$potenza."W ".$row['tensione_alimentazione']."V ".$colore_schermo;
+						}
+						
+					}
+					catch(PDOException $e) {
+						echo $e->getMessage();
+						die();
+					}
+					//AL MOMENTO DELL'INSERIMENTO IL CODICE PF FINALE è STATO SOSTITUITO CON UN CODICE PF FITTIZIO IN FUNZIONE DELLE LOGICIE DI PRODUZIONE. Per riprisitare il valore mettere la variabile $codice_PF
+					if($dbh->exec("INSERT INTO richieste_ordini_produzione (data_inserimento,numero_ordine_cliente,riga_ordine_cliente,nome_prodotto,motore_led,id_tipo_luce,id_accessorio,lunghezza,codice_schermo,area_utile,codice_fissaggio,quantita,codice_pf_finale,descrizione_pf,descrizione_pf_breve,riferimento_cliente,tensione_alimentazione,potenza_barra_led,num_led,processato) 
+																	VALUES('".$data_ordine."','".$ordine_cliente."','".$riga_ordine_cliente."','".$nome_prodotto."','".$motore_led."','".$temperatura_colore."','".$accessorio."','".$lunghezza."','".$colore_schermo."','".$area_utile."','".$sistema_fissaggio."','".$quantita."','".return_temporary_code_MICHELON($ordine_cliente,$riga_ordine_cliente)."','".$descrittivo_pf."','".$descrittivo_pf_breve."','".$riferimento_ordine_cliente."','".$row['tensione_alimentazione']."','".$potenza."','".$num_led."','0')")){
+							echo "<br /><p style=\"color: red;\"><strong>Richiesta di produzione inserita</strong></p>";
+					}else{
+						echo "<br /><p style=\"color: red;\"><strong>>Problemi dell'inserire la richiesta di produzione per questo prodotto personalizzato</strong></p>";
+					}
+					break;
+				case "C"://strip REEL prima 108LED/M
+					try {
+						foreach($prod as $row) {
+							//if ($row['lunghezza_barra']<=$area_utile){								
+								//ATTENZIONE: La 'potenza a modulo' per queste reel è di 0,33. Dato taroccato in anagrafica per questioni commerciali, vedi Biancotto-Falcier-Codutti. Basta modificare valore in anagrafica per ritornare allo stato inziale
+								$numero_barre=floor($area_utile/27.8)*27.8;
+								$calcolo_led=floor($area_utile/27.8);
 								$num_led=($calcolo_led*$row['numero_led']);
 								$potenza=Round(((int)$calcolo_led* $row['potenza_a_modulo']),1);
 							

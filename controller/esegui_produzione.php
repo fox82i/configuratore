@@ -93,7 +93,7 @@
 					
 					case "11":
 						/*GESTIONE SUPPORTO ALLUMINIO PER REEL*/
-						if ($rows[0]['motore_led']=='A' or $rows[0]['motore_led']=='B'){
+						if ($rows[0]['motore_led']=='A' or $rows[0]['motore_led']=='B' or $rows[0]['motore_led']=='C'){
 							if ($_POST['tipo_view']=='old'){
 								supporto_reel($row['motore_led'],$sub_riga['codice_componente'],$sub_riga['ordine'],$profilo_alluminio,$rows[0]['area_utile'],$rows[0]['quantita'],"Lavorazione supporto alluminio REEL","Pezzi supprto alluminio",$diba_prod,$rows[0]['codice_pf_finale'],$ordine_produzione,$riga_ordine);
 								#taglio_profili2($sub_riga['codice_componente'],$sub_riga['ordine'],4300,$rows[0]['lunghezza'],$rows[0]['quantita'],$ingombro_fisso_alluminio,"Lavorazione supporto alluminio REEL","Pezzi supprto alluminio",$diba_prod,$rows[0]['codice_pf_finale'],$ordine_produzione,$riga_ordine);
@@ -319,9 +319,10 @@
 				}
 			}
 			/*CONFEZIONE DI FISSAGGIO/MAGNETI*/
+			
 			switch ($rows[0]['nome_prodotto']){
 				case "BALI":
-					regole_sitema_fissaggio($rows[0]['nome_prodotto'],$rows[0]['codice_fissaggio'],$rows[0]['quantita'],$diba_prod,$rows[0]['codice_pf_finale'],$ordine_produzione,$riga_ordine);
+					regole_sitema_fissaggio($rows[0]['nome_prodotto'],$rows[0]['codice_fissaggio'],$rows[0]['quantita'],$diba_prod,$rows[0]['codice_pf_finale'],$ordine_produzione,$riga_ordine,$rows[0]['lunghezza']);
 					break;
 			}			
 			/*FINE CONFEZIONE DI FISSAGGIO/MAGNETI*/

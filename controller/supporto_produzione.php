@@ -169,6 +169,10 @@
 				$taglio=floor($area_utile/25)*25;
 				$pezzi=round(($taglio*$quantita)/$lunghezza_profilo,2);
 				break;
+			case "C":
+				$taglio=floor($area_utile/27.8)*27.8;
+				$pezzi=round(($taglio*$quantita)/$lunghezza_profilo,2);
+				break;
 			default:
 				$taglio=-1;
 				$pezzi=-1;
@@ -213,6 +217,10 @@
 				break;
 			case "B":
 				$taglio=floor($area_utile/25)*25;
+				$pezzi=round(($taglio*$quantita)/$lunghezza_verga,2);
+				break;
+			case "C":
+				$taglio=floor($area_utile/27.8)*27.8;
 				$pezzi=round(($taglio*$quantita)/$lunghezza_verga,2);
 				break;
 			default:
@@ -363,6 +371,7 @@
 				AND anagrafica_barre_led.tensione_alimentazione='12'
 				AND prodotto_lineare_schermo.prodotto_lineare='".$nome_prodotto."'
 				AND prodotto_lineare_schermo.codice_schermo='".$colore_schermo."'
+				AND anagrafica_barre_led.blocco='0'
 				AND prodotto_lineare_schermo.codice_schermo=schermo.codice_schermo
 				ORDER BY CAST(anagrafica_barre_led.lunghezza_barra as SIGNED) DESC;" ;
 		}else{
@@ -387,6 +396,7 @@
 				AND prodotto_lineare_schermo.prodotto_lineare='".$nome_prodotto."'
 				AND prodotto_lineare_schermo.codice_schermo='".$colore_schermo."'
 				AND prodotto_lineare_schermo.codice_schermo=schermo.codice_schermo
+				AND anagrafica_barre_led.blocco='0'
 				ORDER BY CAST(anagrafica_barre_led.lunghezza_barra as SIGNED) DESC;" ;
 		}
 		$sql=$dbh->prepare($select);
@@ -416,6 +426,23 @@
 				case "B"://strip REEL prima 120LED/M ex R1
 					foreach($prod as $row) {
 						$numero_barre=floor($area_utile/25)*25;
+						$pezzi=round(($numero_barre*$quantita)/$row['lunghezza_barra'],2);
+						echo "<tr>
+								<td>80</td>
+								<td>".$row['codice_barra_led']."</td>
+								<td>".$row['descrizione']."</td>
+								<td>".$pezzi."</td>
+								<td>".$quantita. " strip reel da ". $numero_barre."mm</td>
+							</tr>";
+						if (!$diba_prod){
+							inserisci_diba('diba_produzione',$ordine_cliente,$riga_ordine,$pf_finale,'80',$row['codice_barra_led'],$row['descrizione'],'PZV',$pezzi,date("Ymd"));
+							inserisci_diba('diba_tecnica',$ordine_cliente,$riga_ordine,$pf_finale,'80',$row['codice_barra_led'],$row['descrizione'],'MM',$numero_barre,date("Ymd"));
+						}
+					}
+					break;
+				case "C"://strip REEL prima 108LED/M
+					foreach($prod as $row) {
+						$numero_barre=floor($area_utile/27.8)*27.8;
 						$pezzi=round(($numero_barre*$quantita)/$row['lunghezza_barra'],2);
 						echo "<tr>
 								<td>80</td>
@@ -460,10 +487,16 @@
 					}								
 			}		
 	}
-	function regole_sitema_fissaggio($nome_prodotto,$codice_fissaggio,$quantita,$diba_prod,$pf_finale,$ordine_cliente,$riga_ordine){
+	function regole_sitema_fissaggio($nome_prodotto,$codice_fissaggio,$quantita,$diba_prod,$pf_finale,$ordine_cliente,$riga_ordine,$lunghezza){
 		global $dbh;
 		
-		$sql=$dbh->query("SELECT * FROM regole_sistema_fissaggio WHERE nome_prodotto='".$nome_prodotto."' AND tipo_fissaggio='".$codice_fissaggio."'; ");
+		$sql=$dbh->query("	SELECT * 
+							FROM regole_sistema_fissaggio 
+							WHERE nome_prodotto='".$nome_prodotto."' 
+							AND tipo_fissaggio='".$codice_fissaggio."'
+							AND ".$lunghezza.">=da
+							AND ".$lunghezza."<=a
+							; ");
 		$fissaggi=$sql->fetchAll();
 		
 		foreach ($fissaggi as $fissaggio){
@@ -513,6 +546,7 @@
 						case "X":
 						case "A":
 						case "B":
+						case "C":
 						case "H":
 						case "P":
 							$sql=$dbh->query("SELECT * FROM regole_cavo_connessione WHERE nome_prodotto='".$nome_prodotto."' and id_accessorio='".$accessorio."' and codice_motore_led='".$motore_led."';");
@@ -554,6 +588,7 @@
 					case "P":
 					case "A":
 					case "B":
+					case "C":
 						$sql=$dbh->query("SELECT * FROM regole_accessori WHERE nome_prodotto='".$nome_prodotto."' and id_accessorio='".$accessorio."' and codice_motore_led='".$motore_led."';");
 						$row=$sql->fetchAll();
 							echo"<tr>
