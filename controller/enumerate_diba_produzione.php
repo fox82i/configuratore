@@ -13,7 +13,7 @@
 								ORDER BY posizione_diba ASC;");
 		$res=$select->fetchAll();
 	
-		$select_articolo=$dbh->query("	SELECT codice_pf_finale,descrizione_pf,descrizione_pf_breve 
+		$select_articolo=$dbh->query("	SELECT codice_pf_finale,descrizione_pf,descrizione_pf_breve ,quantita
 										FROM richieste_ordini_produzione 
 										WHERE numero_ordine_cliente='".$ordine_cliente."' 
 										AND	 riga_ordine_cliente='".$riga_ordine_cliente."';");
@@ -25,7 +25,8 @@
 				<p>
 					<strong>Codice articolo:</strong> ".$articolo[0]['codice_pf_finale']." <br/>
 					<strong>Descrizione articolo breve:</strong> ".$articolo[0]['descrizione_pf_breve']." <br/>
-					<strong>Descrizione articolo estesa:</strong> ".$articolo[0]['descrizione_pf']."
+					<strong>Descrizione articolo estesa:</strong> ".$articolo[0]['descrizione_pf']." <br/>
+					<strong>Quanti&agrave; ordinata:</strong> ".$articolo[0]['quantita']."
 				</p>
 				<table border=\"1\">
 					<caption><strong> DiBa tecnica per 1 pezzo </strong></caption>
@@ -63,7 +64,7 @@
 								ORDER BY posizione_diba ASC;");
 		$res=$select->fetchAll();
 	
-		$select_articolo=$dbh->query("	SELECT codice_pf_finale,descrizione_pf,descrizione_pf_breve 
+		$select_articolo=$dbh->query("	SELECT codice_pf_finale,descrizione_pf,descrizione_pf_breve ,quantita
 										FROM richieste_ordini_produzione 
 										WHERE numero_ordine_cliente='".$ordine_cliente."' 
 										AND	 riga_ordine_cliente='".$riga_ordine_cliente."';");
@@ -74,7 +75,8 @@
 				<p>
 					<strong>Codice articolo:</strong> ".$articolo[0]['codice_pf_finale']." <br/>
 					<strong>Descrizione articolo breve:</strong> ".$articolo[0]['descrizione_pf_breve']." <br/>
-					<strong>Descrizione articolo estesa:</strong> ".$articolo[0]['descrizione_pf']."
+					<strong>Descrizione articolo estesa:</strong> ".$articolo[0]['descrizione_pf']." <br/>
+					<strong>Quanti&agrave; ordinata:</strong> ".$articolo[0]['quantita']."
 				</p>
 				<table border=\"1\">
 					<caption><strong> DiBa produzione totale </strong></caption>

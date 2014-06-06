@@ -1,6 +1,6 @@
 <?php
 
-	include($_SERVER['DOCUMENT_ROOT']."/configuratore/include/dbconfig.inc.php");
+	include("../../include/dbconfig.inc.php");
 
 	$ordine_cliente=$_REQUEST['ordine_cliente'];
 	$riga_ordine=$_REQUEST['riga_ordine'];

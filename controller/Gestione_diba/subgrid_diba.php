@@ -1,5 +1,5 @@
 <?php
-	include($_SERVER['DOCUMENT_ROOT']."/configuratore/include/dbconfig.inc.php");
+	include("../../include/dbconfig.inc.php");
 
 	$codice_PF=$_REQUEST["codice_PF"];
 	

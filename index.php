@@ -97,13 +97,13 @@
 												</select>&nbsp;
 									
 												<strong>Accessorio </strong>&nbsp;
-												<select name="accessorio" id="accessorio" disabled="disabled" tabindex="40" onChange="doAjax('controller/type_schermo.php', 'man='+getValue('nome_prodotto'), 'populateColoreSchermo', 'post', '1')">
+												<select name="accessorio" id="accessorio" disabled="disabled"  onChange="doAjax('controller/type_schermo.php', 'man='+getValue('nome_prodotto'), 'populateColoreSchermo', 'post', '1')" tabindex="40">
 													<option value="">Please select:</option>
 												</select>&nbsp;									
 												
 												
 												<strong>Colore Schermo </strong>&nbsp;
-												<select name="schermo" id="schermo" disabled="disabled" tabindex="50" onChange="doAjax('controller/type_fissaggio.php', 'man='+getValue('nome_prodotto'), 'populateSistemaFissaggio', 'post', '1')">
+												<select name="schermo" id="schermo" disabled="disabled" onChange="doAjax('controller/type_fissaggio.php', 'man='+getValue('nome_prodotto'), 'populateSistemaFissaggio', 'post', '1')"  tabindex="50">
 													<option value="">Please select:</option>
 												</select>&nbsp;
 												
@@ -113,10 +113,10 @@
 												</select>&nbsp;
 									
 												<label><strong>Lunghezza prodotto:</strong> (mm)<br />
-													<input type="text" name="lung_prod" id="lung_prod" value="" size="4" tabindex="70"  />
+													<input type="text" name="lung_prod" id="lung_prod" value="" maxlength="4" size="4"  tabindex="70"  />
 												</label>
 												<label><strong>Quantit&agrave; di vendita:</strong><br />
-													<input type="text" name="quantita" id="quantita" value="" size="4" tabindex="80"  />
+													<input type="text" name="quantita" id="quantita" value="" maxlength="2" size="4" tabindex="80"  />
 												</label>
 												<label><strong>Codice cliente:</strong> <br />
 													<input type="text" name="codice_cliente" id="codice_cliente" value="" size="7" tabindex="90"  />

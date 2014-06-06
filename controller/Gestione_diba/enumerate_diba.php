@@ -1,5 +1,5 @@
 <?php
-	include($_SERVER['DOCUMENT_ROOT']."/configuratore/include/dbconfig.inc.php");
+	include("../../include/dbconfig.inc.php");
 	
 	$page=isset($_POST['page']) ? intval($_POST['page']): 1;
 	$rows=isset($_POST['rows']) ? intval($_POST['rows']): 10;

@@ -20,6 +20,10 @@ function resetValues() {
 	window.document.getElementById('schermo').options.length = 0;
 	window.document.getElementById('schermo').options.add(modelOption);
 	window.document.getElementById('schermo').disabled = true;
+	window.document.getElementById('fissaggio').options.length = 0;
+	window.document.getElementById('fissaggio').options.add(modelOption);
+	window.document.getElementById('fissaggio').disabled = true;
+
 
 }
 
@@ -30,6 +34,9 @@ function populateSistemaFissaggio(xmlindata) {
 		
 		return;
 	}
+	window.document.getElementById('fissaggio').options.length = 0;
+	var firstOption = new Option('Please select', '', false, false);
+	window.document.getElementById('fissaggio').options.add(firstOption);
 	for(var i = 0; i < xmldata.length; i++) {
 		var typeid = '';
 		var typename = '';
@@ -53,6 +60,9 @@ function populateColoreSchermo(xmlindata) {
 		alert("Data Unavailable");
 		return;
 	}
+	window.document.getElementById('schermo').options.length = 0;
+	var firstOption = new Option('Please select', '', false, false);
+	window.document.getElementById('schermo').options.add(firstOption);
 	for(var i = 0; i < xmldata.length; i++) {
 		var typeid = '';
 		var typename = '';
@@ -159,7 +169,7 @@ function populateTempColore(xmlindata) {
 function populateAccessori(xmlindata) {
 	var xmldata = xmlindata.getElementsByTagName('Accessorio');
 	if(xmldata.length <= 0) {
-		alert("Data Unavailable");
+		
 		return;
 	}
 	window.document.getElementById('accessorio').options.length = 0;
@@ -204,6 +214,9 @@ function populateRigaOrdine(xmlindata) {
 		alert("Data Unavailable");
 		return;
 	}	
+	window.document.getElementById('riga_ordine_cliente').options.length = 0;
+	var firstOption = new Option('Please select', '', false, false);
+	window.document.getElementById('riga_ordine_cliente').options.add(firstOption);
 	for(var i = 0; i < xmldata.length; i++) {
 		var manname = '';
 		var manid='';
